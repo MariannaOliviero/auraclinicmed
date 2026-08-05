@@ -11,7 +11,9 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as IlDottoreRouteImport } from './routes/il-dottore'
+import { Route as MagazineRouteImport } from './routes/magazine'
 import { Route as RisultatiRouteImport } from './routes/risultati'
+import { Route as TestimonianzeRouteImport } from './routes/testimonianze'
 import { Route as TrattamentiIndexRouteImport } from './routes/trattamenti.index'
 import { Route as TrattamentiCategoriaIndexRouteImport } from './routes/trattamenti.$categoria.index'
 import { Route as TrattamentiCategoriaSlugRouteImport } from './routes/trattamenti.$categoria.$slug'
@@ -26,9 +28,19 @@ const IlDottoreRoute = IlDottoreRouteImport.update({
   path: '/il-dottore',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MagazineRoute = MagazineRouteImport.update({
+  id: '/magazine',
+  path: '/magazine',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RisultatiRoute = RisultatiRouteImport.update({
   id: '/risultati',
   path: '/risultati',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TestimonianzeRoute = TestimonianzeRouteImport.update({
+  id: '/testimonianze',
+  path: '/testimonianze',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TrattamentiIndexRoute = TrattamentiIndexRouteImport.update({
@@ -52,7 +64,9 @@ const TrattamentiCategoriaSlugRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/il-dottore': typeof IlDottoreRoute
+  '/magazine': typeof MagazineRoute
   '/risultati': typeof RisultatiRoute
+  '/testimonianze': typeof TestimonianzeRoute
   '/trattamenti/': typeof TrattamentiIndexRoute
   '/trattamenti/$categoria/$slug': typeof TrattamentiCategoriaSlugRoute
   '/trattamenti/$categoria/': typeof TrattamentiCategoriaIndexRoute
@@ -60,7 +74,9 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/il-dottore': typeof IlDottoreRoute
+  '/magazine': typeof MagazineRoute
   '/risultati': typeof RisultatiRoute
+  '/testimonianze': typeof TestimonianzeRoute
   '/trattamenti': typeof TrattamentiIndexRoute
   '/trattamenti/$categoria/$slug': typeof TrattamentiCategoriaSlugRoute
   '/trattamenti/$categoria': typeof TrattamentiCategoriaIndexRoute
@@ -69,7 +85,9 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/il-dottore': typeof IlDottoreRoute
+  '/magazine': typeof MagazineRoute
   '/risultati': typeof RisultatiRoute
+  '/testimonianze': typeof TestimonianzeRoute
   '/trattamenti/': typeof TrattamentiIndexRoute
   '/trattamenti/$categoria/$slug': typeof TrattamentiCategoriaSlugRoute
   '/trattamenti/$categoria/': typeof TrattamentiCategoriaIndexRoute
@@ -79,7 +97,9 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/il-dottore'
+    | '/magazine'
     | '/risultati'
+    | '/testimonianze'
     | '/trattamenti/'
     | '/trattamenti/$categoria/$slug'
     | '/trattamenti/$categoria/'
@@ -87,7 +107,9 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/il-dottore'
+    | '/magazine'
     | '/risultati'
+    | '/testimonianze'
     | '/trattamenti'
     | '/trattamenti/$categoria/$slug'
     | '/trattamenti/$categoria'
@@ -95,7 +117,9 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/il-dottore'
+    | '/magazine'
     | '/risultati'
+    | '/testimonianze'
     | '/trattamenti/'
     | '/trattamenti/$categoria/$slug'
     | '/trattamenti/$categoria/'
@@ -104,7 +128,9 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   IlDottoreRoute: typeof IlDottoreRoute
+  MagazineRoute: typeof MagazineRoute
   RisultatiRoute: typeof RisultatiRoute
+  TestimonianzeRoute: typeof TestimonianzeRoute
   TrattamentiIndexRoute: typeof TrattamentiIndexRoute
   TrattamentiCategoriaSlugRoute: typeof TrattamentiCategoriaSlugRoute
   TrattamentiCategoriaIndexRoute: typeof TrattamentiCategoriaIndexRoute
@@ -126,11 +152,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IlDottoreRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/magazine': {
+      id: '/magazine'
+      path: '/magazine'
+      fullPath: '/magazine'
+      preLoaderRoute: typeof MagazineRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/risultati': {
       id: '/risultati'
       path: '/risultati'
       fullPath: '/risultati'
       preLoaderRoute: typeof RisultatiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/testimonianze': {
+      id: '/testimonianze'
+      path: '/testimonianze'
+      fullPath: '/testimonianze'
+      preLoaderRoute: typeof TestimonianzeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/trattamenti/': {
@@ -160,7 +200,9 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   IlDottoreRoute: IlDottoreRoute,
+  MagazineRoute: MagazineRoute,
   RisultatiRoute: RisultatiRoute,
+  TestimonianzeRoute: TestimonianzeRoute,
   TrattamentiIndexRoute: TrattamentiIndexRoute,
   TrattamentiCategoriaSlugRoute: TrattamentiCategoriaSlugRoute,
   TrattamentiCategoriaIndexRoute: TrattamentiCategoriaIndexRoute,
