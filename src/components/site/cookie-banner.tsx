@@ -130,7 +130,8 @@ function Row({
         <div className="text-sm font-medium">{title}</div>
         <p className="text-xs text-muted-foreground">{desc}</p>
       </div>
-      <Switch checked={checked} onCheckedChange={onChange} disabled={disabled} />
+      <Switch checked={checked} onCheckedChange={onChange ?? (() => {})} disabled={disabled ?? false} />
+
     </div>
   );
 }
