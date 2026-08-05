@@ -8,7 +8,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { categories, getTreatment } from "@/lib/treatments";
+import { categories, getTreatment, type Treatment } from "@/lib/treatments";
 
 export const Route = createFileRoute("/trattamenti/$categoria/$slug")({
   loader: ({ params }) => {
@@ -40,7 +40,7 @@ export const Route = createFileRoute("/trattamenti/$categoria/$slug")({
 });
 
 function TreatmentPage() {
-  const { treatment: t } = Route.useLoaderData();
+  const t = Route.useLoaderData().treatment as Treatment;
   const category = categories.find((c) => c.slug === t.category);
 
   return (

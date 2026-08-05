@@ -10,12 +10,19 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as IlDottoreRouteImport } from './routes/il-dottore'
 import { Route as TrattamentiIndexRouteImport } from './routes/trattamenti.index'
 import { Route as TrattamentiCategoriaIndexRouteImport } from './routes/trattamenti.$categoria.index'
+import { Route as TrattamentiCategoriaSlugRouteImport } from './routes/trattamenti.$categoria.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IlDottoreRoute = IlDottoreRouteImport.update({
+  id: '/il-dottore',
+  path: '/il-dottore',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TrattamentiIndexRoute = TrattamentiIndexRouteImport.update({
@@ -29,34 +36,64 @@ const TrattamentiCategoriaIndexRoute =
     path: '/trattamenti/$categoria/',
     getParentRoute: () => rootRouteImport,
   } as any)
+const TrattamentiCategoriaSlugRoute =
+  TrattamentiCategoriaSlugRouteImport.update({
+    id: '/trattamenti/$categoria/$slug',
+    path: '/trattamenti/$categoria/$slug',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/il-dottore': typeof IlDottoreRoute
   '/trattamenti/': typeof TrattamentiIndexRoute
+  '/trattamenti/$categoria/$slug': typeof TrattamentiCategoriaSlugRoute
   '/trattamenti/$categoria/': typeof TrattamentiCategoriaIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/il-dottore': typeof IlDottoreRoute
   '/trattamenti': typeof TrattamentiIndexRoute
+  '/trattamenti/$categoria/$slug': typeof TrattamentiCategoriaSlugRoute
   '/trattamenti/$categoria': typeof TrattamentiCategoriaIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/il-dottore': typeof IlDottoreRoute
   '/trattamenti/': typeof TrattamentiIndexRoute
+  '/trattamenti/$categoria/$slug': typeof TrattamentiCategoriaSlugRoute
   '/trattamenti/$categoria/': typeof TrattamentiCategoriaIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/trattamenti/' | '/trattamenti/$categoria/'
+  fullPaths:
+    | '/'
+    | '/il-dottore'
+    | '/trattamenti/'
+    | '/trattamenti/$categoria/$slug'
+    | '/trattamenti/$categoria/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/trattamenti' | '/trattamenti/$categoria'
-  id: '__root__' | '/' | '/trattamenti/' | '/trattamenti/$categoria/'
+  to:
+    | '/'
+    | '/il-dottore'
+    | '/trattamenti'
+    | '/trattamenti/$categoria/$slug'
+    | '/trattamenti/$categoria'
+  id:
+    | '__root__'
+    | '/'
+    | '/il-dottore'
+    | '/trattamenti/'
+    | '/trattamenti/$categoria/$slug'
+    | '/trattamenti/$categoria/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  IlDottoreRoute: typeof IlDottoreRoute
   TrattamentiIndexRoute: typeof TrattamentiIndexRoute
+  TrattamentiCategoriaSlugRoute: typeof TrattamentiCategoriaSlugRoute
   TrattamentiCategoriaIndexRoute: typeof TrattamentiCategoriaIndexRoute
 }
 
@@ -67,6 +104,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/il-dottore': {
+      id: '/il-dottore'
+      path: '/il-dottore'
+      fullPath: '/il-dottore'
+      preLoaderRoute: typeof IlDottoreRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/trattamenti/': {
@@ -83,12 +127,21 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TrattamentiCategoriaIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/trattamenti/$categoria/$slug': {
+      id: '/trattamenti/$categoria/$slug'
+      path: '/trattamenti/$categoria/$slug'
+      fullPath: '/trattamenti/$categoria/$slug'
+      preLoaderRoute: typeof TrattamentiCategoriaSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  IlDottoreRoute: IlDottoreRoute,
   TrattamentiIndexRoute: TrattamentiIndexRoute,
+  TrattamentiCategoriaSlugRoute: TrattamentiCategoriaSlugRoute,
   TrattamentiCategoriaIndexRoute: TrattamentiCategoriaIndexRoute,
 }
 export const routeTree = rootRouteImport
