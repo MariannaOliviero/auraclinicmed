@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as IlDottoreRouteImport } from './routes/il-dottore'
+import { Route as RisultatiRouteImport } from './routes/risultati'
 import { Route as TrattamentiIndexRouteImport } from './routes/trattamenti.index'
 import { Route as TrattamentiCategoriaIndexRouteImport } from './routes/trattamenti.$categoria.index'
 import { Route as TrattamentiCategoriaSlugRouteImport } from './routes/trattamenti.$categoria.$slug'
@@ -23,6 +24,11 @@ const IndexRoute = IndexRouteImport.update({
 const IlDottoreRoute = IlDottoreRouteImport.update({
   id: '/il-dottore',
   path: '/il-dottore',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RisultatiRoute = RisultatiRouteImport.update({
+  id: '/risultati',
+  path: '/risultati',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TrattamentiIndexRoute = TrattamentiIndexRouteImport.update({
@@ -46,6 +52,7 @@ const TrattamentiCategoriaSlugRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/il-dottore': typeof IlDottoreRoute
+  '/risultati': typeof RisultatiRoute
   '/trattamenti/': typeof TrattamentiIndexRoute
   '/trattamenti/$categoria/$slug': typeof TrattamentiCategoriaSlugRoute
   '/trattamenti/$categoria/': typeof TrattamentiCategoriaIndexRoute
@@ -53,6 +60,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/il-dottore': typeof IlDottoreRoute
+  '/risultati': typeof RisultatiRoute
   '/trattamenti': typeof TrattamentiIndexRoute
   '/trattamenti/$categoria/$slug': typeof TrattamentiCategoriaSlugRoute
   '/trattamenti/$categoria': typeof TrattamentiCategoriaIndexRoute
@@ -61,6 +69,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/il-dottore': typeof IlDottoreRoute
+  '/risultati': typeof RisultatiRoute
   '/trattamenti/': typeof TrattamentiIndexRoute
   '/trattamenti/$categoria/$slug': typeof TrattamentiCategoriaSlugRoute
   '/trattamenti/$categoria/': typeof TrattamentiCategoriaIndexRoute
@@ -70,6 +79,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/il-dottore'
+    | '/risultati'
     | '/trattamenti/'
     | '/trattamenti/$categoria/$slug'
     | '/trattamenti/$categoria/'
@@ -77,6 +87,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/il-dottore'
+    | '/risultati'
     | '/trattamenti'
     | '/trattamenti/$categoria/$slug'
     | '/trattamenti/$categoria'
@@ -84,6 +95,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/il-dottore'
+    | '/risultati'
     | '/trattamenti/'
     | '/trattamenti/$categoria/$slug'
     | '/trattamenti/$categoria/'
@@ -92,6 +104,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   IlDottoreRoute: typeof IlDottoreRoute
+  RisultatiRoute: typeof RisultatiRoute
   TrattamentiIndexRoute: typeof TrattamentiIndexRoute
   TrattamentiCategoriaSlugRoute: typeof TrattamentiCategoriaSlugRoute
   TrattamentiCategoriaIndexRoute: typeof TrattamentiCategoriaIndexRoute
@@ -111,6 +124,13 @@ declare module '@tanstack/react-router' {
       path: '/il-dottore'
       fullPath: '/il-dottore'
       preLoaderRoute: typeof IlDottoreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/risultati': {
+      id: '/risultati'
+      path: '/risultati'
+      fullPath: '/risultati'
+      preLoaderRoute: typeof RisultatiRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/trattamenti/': {
@@ -140,6 +160,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   IlDottoreRoute: IlDottoreRoute,
+  RisultatiRoute: RisultatiRoute,
   TrattamentiIndexRoute: TrattamentiIndexRoute,
   TrattamentiCategoriaSlugRoute: TrattamentiCategoriaSlugRoute,
   TrattamentiCategoriaIndexRoute: TrattamentiCategoriaIndexRoute,
