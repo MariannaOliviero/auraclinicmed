@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ContattiRouteImport } from './routes/contatti'
 import { Route as IlDottoreRouteImport } from './routes/il-dottore'
 import { Route as MagazineRouteImport } from './routes/magazine'
 import { Route as RisultatiRouteImport } from './routes/risultati'
@@ -21,6 +22,11 @@ import { Route as TrattamentiCategoriaSlugRouteImport } from './routes/trattamen
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContattiRoute = ContattiRouteImport.update({
+  id: '/contatti',
+  path: '/contatti',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IlDottoreRoute = IlDottoreRouteImport.update({
@@ -63,6 +69,7 @@ const TrattamentiCategoriaSlugRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/contatti': typeof ContattiRoute
   '/il-dottore': typeof IlDottoreRoute
   '/magazine': typeof MagazineRoute
   '/risultati': typeof RisultatiRoute
@@ -73,6 +80,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/contatti': typeof ContattiRoute
   '/il-dottore': typeof IlDottoreRoute
   '/magazine': typeof MagazineRoute
   '/risultati': typeof RisultatiRoute
@@ -84,6 +92,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/contatti': typeof ContattiRoute
   '/il-dottore': typeof IlDottoreRoute
   '/magazine': typeof MagazineRoute
   '/risultati': typeof RisultatiRoute
@@ -96,6 +105,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/contatti'
     | '/il-dottore'
     | '/magazine'
     | '/risultati'
@@ -106,6 +116,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/contatti'
     | '/il-dottore'
     | '/magazine'
     | '/risultati'
@@ -116,6 +127,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/contatti'
     | '/il-dottore'
     | '/magazine'
     | '/risultati'
@@ -127,6 +139,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ContattiRoute: typeof ContattiRoute
   IlDottoreRoute: typeof IlDottoreRoute
   MagazineRoute: typeof MagazineRoute
   RisultatiRoute: typeof RisultatiRoute
@@ -143,6 +156,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contatti': {
+      id: '/contatti'
+      path: '/contatti'
+      fullPath: '/contatti'
+      preLoaderRoute: typeof ContattiRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/il-dottore': {
@@ -199,6 +219,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ContattiRoute: ContattiRoute,
   IlDottoreRoute: IlDottoreRoute,
   MagazineRoute: MagazineRoute,
   RisultatiRoute: RisultatiRoute,
