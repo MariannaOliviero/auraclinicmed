@@ -17,6 +17,7 @@ import { Route as RisultatiRouteImport } from './routes/risultati'
 import { Route as TestimonianzeRouteImport } from './routes/testimonianze'
 import { Route as LegaleCookieRouteImport } from './routes/legale.cookie'
 import { Route as LegaleDatiSanitariRouteImport } from './routes/legale.dati-sanitari'
+import { Route as LegaleDirittiRouteImport } from './routes/legale.diritti'
 import { Route as LegalePrivacyRouteImport } from './routes/legale.privacy'
 import { Route as LegaleTerminiRouteImport } from './routes/legale.termini'
 import { Route as TrattamentiIndexRouteImport } from './routes/trattamenti.index'
@@ -63,6 +64,11 @@ const LegaleDatiSanitariRoute = LegaleDatiSanitariRouteImport.update({
   path: '/legale/dati-sanitari',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LegaleDirittiRoute = LegaleDirittiRouteImport.update({
+  id: '/legale/diritti',
+  path: '/legale/diritti',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LegalePrivacyRoute = LegalePrivacyRouteImport.update({
   id: '/legale/privacy',
   path: '/legale/privacy',
@@ -100,6 +106,7 @@ export interface FileRoutesByFullPath {
   '/testimonianze': typeof TestimonianzeRoute
   '/legale/cookie': typeof LegaleCookieRoute
   '/legale/dati-sanitari': typeof LegaleDatiSanitariRoute
+  '/legale/diritti': typeof LegaleDirittiRoute
   '/legale/privacy': typeof LegalePrivacyRoute
   '/legale/termini': typeof LegaleTerminiRoute
   '/trattamenti/': typeof TrattamentiIndexRoute
@@ -115,6 +122,7 @@ export interface FileRoutesByTo {
   '/testimonianze': typeof TestimonianzeRoute
   '/legale/cookie': typeof LegaleCookieRoute
   '/legale/dati-sanitari': typeof LegaleDatiSanitariRoute
+  '/legale/diritti': typeof LegaleDirittiRoute
   '/legale/privacy': typeof LegalePrivacyRoute
   '/legale/termini': typeof LegaleTerminiRoute
   '/trattamenti': typeof TrattamentiIndexRoute
@@ -131,6 +139,7 @@ export interface FileRoutesById {
   '/testimonianze': typeof TestimonianzeRoute
   '/legale/cookie': typeof LegaleCookieRoute
   '/legale/dati-sanitari': typeof LegaleDatiSanitariRoute
+  '/legale/diritti': typeof LegaleDirittiRoute
   '/legale/privacy': typeof LegalePrivacyRoute
   '/legale/termini': typeof LegaleTerminiRoute
   '/trattamenti/': typeof TrattamentiIndexRoute
@@ -148,6 +157,7 @@ export interface FileRouteTypes {
     | '/testimonianze'
     | '/legale/cookie'
     | '/legale/dati-sanitari'
+    | '/legale/diritti'
     | '/legale/privacy'
     | '/legale/termini'
     | '/trattamenti/'
@@ -163,6 +173,7 @@ export interface FileRouteTypes {
     | '/testimonianze'
     | '/legale/cookie'
     | '/legale/dati-sanitari'
+    | '/legale/diritti'
     | '/legale/privacy'
     | '/legale/termini'
     | '/trattamenti'
@@ -178,6 +189,7 @@ export interface FileRouteTypes {
     | '/testimonianze'
     | '/legale/cookie'
     | '/legale/dati-sanitari'
+    | '/legale/diritti'
     | '/legale/privacy'
     | '/legale/termini'
     | '/trattamenti/'
@@ -194,6 +206,7 @@ export interface RootRouteChildren {
   TestimonianzeRoute: typeof TestimonianzeRoute
   LegaleCookieRoute: typeof LegaleCookieRoute
   LegaleDatiSanitariRoute: typeof LegaleDatiSanitariRoute
+  LegaleDirittiRoute: typeof LegaleDirittiRoute
   LegalePrivacyRoute: typeof LegalePrivacyRoute
   LegaleTerminiRoute: typeof LegaleTerminiRoute
   TrattamentiIndexRoute: typeof TrattamentiIndexRoute
@@ -259,6 +272,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LegaleDatiSanitariRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/legale/diritti': {
+      id: '/legale/diritti'
+      path: '/legale/diritti'
+      fullPath: '/legale/diritti'
+      preLoaderRoute: typeof LegaleDirittiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/legale/privacy': {
       id: '/legale/privacy'
       path: '/legale/privacy'
@@ -306,6 +326,7 @@ const rootRouteChildren: RootRouteChildren = {
   TestimonianzeRoute: TestimonianzeRoute,
   LegaleCookieRoute: LegaleCookieRoute,
   LegaleDatiSanitariRoute: LegaleDatiSanitariRoute,
+  LegaleDirittiRoute: LegaleDirittiRoute,
   LegalePrivacyRoute: LegalePrivacyRoute,
   LegaleTerminiRoute: LegaleTerminiRoute,
   TrattamentiIndexRoute: TrattamentiIndexRoute,
