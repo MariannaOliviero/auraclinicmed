@@ -10,33 +10,208 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ContattiRouteImport } from './routes/contatti'
+import { Route as IlDottoreRouteImport } from './routes/il-dottore'
+import { Route as MagazineRouteImport } from './routes/magazine'
+import { Route as RisultatiRouteImport } from './routes/risultati'
+import { Route as TestimonianzeRouteImport } from './routes/testimonianze'
+import { Route as LegaleCookieRouteImport } from './routes/legale.cookie'
+import { Route as LegaleDatiSanitariRouteImport } from './routes/legale.dati-sanitari'
+import { Route as LegaleDirittiRouteImport } from './routes/legale.diritti'
+import { Route as LegalePrivacyRouteImport } from './routes/legale.privacy'
+import { Route as LegaleTerminiRouteImport } from './routes/legale.termini'
+import { Route as TrattamentiIndexRouteImport } from './routes/trattamenti.index'
+import { Route as TrattamentiCategoriaIndexRouteImport } from './routes/trattamenti.$categoria.index'
+import { Route as TrattamentiCategoriaSlugRouteImport } from './routes/trattamenti.$categoria.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ContattiRoute = ContattiRouteImport.update({
+  id: '/contatti',
+  path: '/contatti',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IlDottoreRoute = IlDottoreRouteImport.update({
+  id: '/il-dottore',
+  path: '/il-dottore',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MagazineRoute = MagazineRouteImport.update({
+  id: '/magazine',
+  path: '/magazine',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RisultatiRoute = RisultatiRouteImport.update({
+  id: '/risultati',
+  path: '/risultati',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TestimonianzeRoute = TestimonianzeRouteImport.update({
+  id: '/testimonianze',
+  path: '/testimonianze',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LegaleCookieRoute = LegaleCookieRouteImport.update({
+  id: '/legale/cookie',
+  path: '/legale/cookie',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LegaleDatiSanitariRoute = LegaleDatiSanitariRouteImport.update({
+  id: '/legale/dati-sanitari',
+  path: '/legale/dati-sanitari',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LegaleDirittiRoute = LegaleDirittiRouteImport.update({
+  id: '/legale/diritti',
+  path: '/legale/diritti',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LegalePrivacyRoute = LegalePrivacyRouteImport.update({
+  id: '/legale/privacy',
+  path: '/legale/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LegaleTerminiRoute = LegaleTerminiRouteImport.update({
+  id: '/legale/termini',
+  path: '/legale/termini',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TrattamentiIndexRoute = TrattamentiIndexRouteImport.update({
+  id: '/trattamenti/',
+  path: '/trattamenti/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TrattamentiCategoriaIndexRoute =
+  TrattamentiCategoriaIndexRouteImport.update({
+    id: '/trattamenti/$categoria/',
+    path: '/trattamenti/$categoria/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const TrattamentiCategoriaSlugRoute =
+  TrattamentiCategoriaSlugRouteImport.update({
+    id: '/trattamenti/$categoria/$slug',
+    path: '/trattamenti/$categoria/$slug',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/contatti': typeof ContattiRoute
+  '/il-dottore': typeof IlDottoreRoute
+  '/magazine': typeof MagazineRoute
+  '/risultati': typeof RisultatiRoute
+  '/testimonianze': typeof TestimonianzeRoute
+  '/legale/cookie': typeof LegaleCookieRoute
+  '/legale/dati-sanitari': typeof LegaleDatiSanitariRoute
+  '/legale/diritti': typeof LegaleDirittiRoute
+  '/legale/privacy': typeof LegalePrivacyRoute
+  '/legale/termini': typeof LegaleTerminiRoute
+  '/trattamenti/': typeof TrattamentiIndexRoute
+  '/trattamenti/$categoria/$slug': typeof TrattamentiCategoriaSlugRoute
+  '/trattamenti/$categoria/': typeof TrattamentiCategoriaIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/contatti': typeof ContattiRoute
+  '/il-dottore': typeof IlDottoreRoute
+  '/magazine': typeof MagazineRoute
+  '/risultati': typeof RisultatiRoute
+  '/testimonianze': typeof TestimonianzeRoute
+  '/legale/cookie': typeof LegaleCookieRoute
+  '/legale/dati-sanitari': typeof LegaleDatiSanitariRoute
+  '/legale/diritti': typeof LegaleDirittiRoute
+  '/legale/privacy': typeof LegalePrivacyRoute
+  '/legale/termini': typeof LegaleTerminiRoute
+  '/trattamenti': typeof TrattamentiIndexRoute
+  '/trattamenti/$categoria/$slug': typeof TrattamentiCategoriaSlugRoute
+  '/trattamenti/$categoria': typeof TrattamentiCategoriaIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/contatti': typeof ContattiRoute
+  '/il-dottore': typeof IlDottoreRoute
+  '/magazine': typeof MagazineRoute
+  '/risultati': typeof RisultatiRoute
+  '/testimonianze': typeof TestimonianzeRoute
+  '/legale/cookie': typeof LegaleCookieRoute
+  '/legale/dati-sanitari': typeof LegaleDatiSanitariRoute
+  '/legale/diritti': typeof LegaleDirittiRoute
+  '/legale/privacy': typeof LegalePrivacyRoute
+  '/legale/termini': typeof LegaleTerminiRoute
+  '/trattamenti/': typeof TrattamentiIndexRoute
+  '/trattamenti/$categoria/$slug': typeof TrattamentiCategoriaSlugRoute
+  '/trattamenti/$categoria/': typeof TrattamentiCategoriaIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/contatti'
+    | '/il-dottore'
+    | '/magazine'
+    | '/risultati'
+    | '/testimonianze'
+    | '/legale/cookie'
+    | '/legale/dati-sanitari'
+    | '/legale/diritti'
+    | '/legale/privacy'
+    | '/legale/termini'
+    | '/trattamenti/'
+    | '/trattamenti/$categoria/$slug'
+    | '/trattamenti/$categoria/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/contatti'
+    | '/il-dottore'
+    | '/magazine'
+    | '/risultati'
+    | '/testimonianze'
+    | '/legale/cookie'
+    | '/legale/dati-sanitari'
+    | '/legale/diritti'
+    | '/legale/privacy'
+    | '/legale/termini'
+    | '/trattamenti'
+    | '/trattamenti/$categoria/$slug'
+    | '/trattamenti/$categoria'
+  id:
+    | '__root__'
+    | '/'
+    | '/contatti'
+    | '/il-dottore'
+    | '/magazine'
+    | '/risultati'
+    | '/testimonianze'
+    | '/legale/cookie'
+    | '/legale/dati-sanitari'
+    | '/legale/diritti'
+    | '/legale/privacy'
+    | '/legale/termini'
+    | '/trattamenti/'
+    | '/trattamenti/$categoria/$slug'
+    | '/trattamenti/$categoria/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ContattiRoute: typeof ContattiRoute
+  IlDottoreRoute: typeof IlDottoreRoute
+  MagazineRoute: typeof MagazineRoute
+  RisultatiRoute: typeof RisultatiRoute
+  TestimonianzeRoute: typeof TestimonianzeRoute
+  LegaleCookieRoute: typeof LegaleCookieRoute
+  LegaleDatiSanitariRoute: typeof LegaleDatiSanitariRoute
+  LegaleDirittiRoute: typeof LegaleDirittiRoute
+  LegalePrivacyRoute: typeof LegalePrivacyRoute
+  LegaleTerminiRoute: typeof LegaleTerminiRoute
+  TrattamentiIndexRoute: typeof TrattamentiIndexRoute
+  TrattamentiCategoriaSlugRoute: typeof TrattamentiCategoriaSlugRoute
+  TrattamentiCategoriaIndexRoute: typeof TrattamentiCategoriaIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,22 +223,116 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/contatti': {
+      id: '/contatti'
+      path: '/contatti'
+      fullPath: '/contatti'
+      preLoaderRoute: typeof ContattiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/il-dottore': {
+      id: '/il-dottore'
+      path: '/il-dottore'
+      fullPath: '/il-dottore'
+      preLoaderRoute: typeof IlDottoreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/magazine': {
+      id: '/magazine'
+      path: '/magazine'
+      fullPath: '/magazine'
+      preLoaderRoute: typeof MagazineRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/risultati': {
+      id: '/risultati'
+      path: '/risultati'
+      fullPath: '/risultati'
+      preLoaderRoute: typeof RisultatiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/testimonianze': {
+      id: '/testimonianze'
+      path: '/testimonianze'
+      fullPath: '/testimonianze'
+      preLoaderRoute: typeof TestimonianzeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/legale/cookie': {
+      id: '/legale/cookie'
+      path: '/legale/cookie'
+      fullPath: '/legale/cookie'
+      preLoaderRoute: typeof LegaleCookieRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/legale/dati-sanitari': {
+      id: '/legale/dati-sanitari'
+      path: '/legale/dati-sanitari'
+      fullPath: '/legale/dati-sanitari'
+      preLoaderRoute: typeof LegaleDatiSanitariRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/legale/diritti': {
+      id: '/legale/diritti'
+      path: '/legale/diritti'
+      fullPath: '/legale/diritti'
+      preLoaderRoute: typeof LegaleDirittiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/legale/privacy': {
+      id: '/legale/privacy'
+      path: '/legale/privacy'
+      fullPath: '/legale/privacy'
+      preLoaderRoute: typeof LegalePrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/legale/termini': {
+      id: '/legale/termini'
+      path: '/legale/termini'
+      fullPath: '/legale/termini'
+      preLoaderRoute: typeof LegaleTerminiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/trattamenti/': {
+      id: '/trattamenti/'
+      path: '/trattamenti'
+      fullPath: '/trattamenti/'
+      preLoaderRoute: typeof TrattamentiIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/trattamenti/$categoria/': {
+      id: '/trattamenti/$categoria/'
+      path: '/trattamenti/$categoria'
+      fullPath: '/trattamenti/$categoria/'
+      preLoaderRoute: typeof TrattamentiCategoriaIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/trattamenti/$categoria/$slug': {
+      id: '/trattamenti/$categoria/$slug'
+      path: '/trattamenti/$categoria/$slug'
+      fullPath: '/trattamenti/$categoria/$slug'
+      preLoaderRoute: typeof TrattamentiCategoriaSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ContattiRoute: ContattiRoute,
+  IlDottoreRoute: IlDottoreRoute,
+  MagazineRoute: MagazineRoute,
+  RisultatiRoute: RisultatiRoute,
+  TestimonianzeRoute: TestimonianzeRoute,
+  LegaleCookieRoute: LegaleCookieRoute,
+  LegaleDatiSanitariRoute: LegaleDatiSanitariRoute,
+  LegaleDirittiRoute: LegaleDirittiRoute,
+  LegalePrivacyRoute: LegalePrivacyRoute,
+  LegaleTerminiRoute: LegaleTerminiRoute,
+  TrattamentiIndexRoute: TrattamentiIndexRoute,
+  TrattamentiCategoriaSlugRoute: TrattamentiCategoriaSlugRoute,
+  TrattamentiCategoriaIndexRoute: TrattamentiCategoriaIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
