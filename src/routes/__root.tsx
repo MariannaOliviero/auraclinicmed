@@ -16,6 +16,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SiteNav } from "@/components/site/site-nav";
 import { SiteFooter } from "@/components/site/site-footer";
 import { CookieBanner } from "@/components/site/cookie-banner";
+import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
   return (
@@ -137,7 +138,9 @@ function RootComponent() {
         </motion.main>
       </AnimatePresence>
       {!isAdmin && <SiteFooter />}
-      <CookieBanner />
+      {!isAdmin && <CookieBanner />}
+      <Toaster position="top-center" />
     </QueryClientProvider>
+
   );
 }

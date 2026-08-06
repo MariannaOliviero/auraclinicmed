@@ -10,23 +10,41 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ContattiRouteImport } from './routes/contatti'
 import { Route as IlDottoreRouteImport } from './routes/il-dottore'
 import { Route as MagazineRouteImport } from './routes/magazine'
 import { Route as RisultatiRouteImport } from './routes/risultati'
 import { Route as TestimonianzeRouteImport } from './routes/testimonianze'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as LegaleCookieRouteImport } from './routes/legale.cookie'
 import { Route as LegaleDatiSanitariRouteImport } from './routes/legale.dati-sanitari'
 import { Route as LegaleDirittiRouteImport } from './routes/legale.diritti'
 import { Route as LegalePrivacyRouteImport } from './routes/legale.privacy'
 import { Route as LegaleTerminiRouteImport } from './routes/legale.termini'
 import { Route as TrattamentiIndexRouteImport } from './routes/trattamenti.index'
+import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
+import { Route as AuthenticatedAdminAgendaRouteImport } from './routes/_authenticated/admin.agenda'
+import { Route as AuthenticatedAdminDocumentiRouteImport } from './routes/_authenticated/admin.documenti'
+import { Route as AuthenticatedAdminImpostazioniRouteImport } from './routes/_authenticated/admin.impostazioni'
+import { Route as AuthenticatedAdminLeadRouteImport } from './routes/_authenticated/admin.lead'
+import { Route as AuthenticatedAdminPazientiRouteImport } from './routes/_authenticated/admin.pazienti'
 import { Route as TrattamentiCategoriaIndexRouteImport } from './routes/trattamenti.$categoria.index'
 import { Route as TrattamentiCategoriaSlugRouteImport } from './routes/trattamenti.$categoria.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContattiRoute = ContattiRouteImport.update({
@@ -53,6 +71,11 @@ const TestimonianzeRoute = TestimonianzeRouteImport.update({
   id: '/testimonianze',
   path: '/testimonianze',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const LegaleCookieRoute = LegaleCookieRouteImport.update({
   id: '/legale/cookie',
@@ -84,6 +107,40 @@ const TrattamentiIndexRoute = TrattamentiIndexRouteImport.update({
   path: '/trattamenti/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedAdminRoute,
+} as any)
+const AuthenticatedAdminAgendaRoute =
+  AuthenticatedAdminAgendaRouteImport.update({
+    id: '/agenda',
+    path: '/agenda',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminDocumentiRoute =
+  AuthenticatedAdminDocumentiRouteImport.update({
+    id: '/documenti',
+    path: '/documenti',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminImpostazioniRoute =
+  AuthenticatedAdminImpostazioniRouteImport.update({
+    id: '/impostazioni',
+    path: '/impostazioni',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminLeadRoute = AuthenticatedAdminLeadRouteImport.update({
+  id: '/lead',
+  path: '/lead',
+  getParentRoute: () => AuthenticatedAdminRoute,
+} as any)
+const AuthenticatedAdminPazientiRoute =
+  AuthenticatedAdminPazientiRouteImport.update({
+    id: '/pazienti',
+    path: '/pazienti',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const TrattamentiCategoriaIndexRoute =
   TrattamentiCategoriaIndexRouteImport.update({
     id: '/trattamenti/$categoria/',
@@ -99,22 +156,31 @@ const TrattamentiCategoriaSlugRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/contatti': typeof ContattiRoute
   '/il-dottore': typeof IlDottoreRoute
   '/magazine': typeof MagazineRoute
   '/risultati': typeof RisultatiRoute
   '/testimonianze': typeof TestimonianzeRoute
+  '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/legale/cookie': typeof LegaleCookieRoute
   '/legale/dati-sanitari': typeof LegaleDatiSanitariRoute
   '/legale/diritti': typeof LegaleDirittiRoute
   '/legale/privacy': typeof LegalePrivacyRoute
   '/legale/termini': typeof LegaleTerminiRoute
   '/trattamenti/': typeof TrattamentiIndexRoute
+  '/admin/agenda': typeof AuthenticatedAdminAgendaRoute
+  '/admin/documenti': typeof AuthenticatedAdminDocumentiRoute
+  '/admin/impostazioni': typeof AuthenticatedAdminImpostazioniRoute
+  '/admin/lead': typeof AuthenticatedAdminLeadRoute
+  '/admin/pazienti': typeof AuthenticatedAdminPazientiRoute
   '/trattamenti/$categoria/$slug': typeof TrattamentiCategoriaSlugRoute
+  '/admin/': typeof AuthenticatedAdminIndexRoute
   '/trattamenti/$categoria/': typeof TrattamentiCategoriaIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/contatti': typeof ContattiRoute
   '/il-dottore': typeof IlDottoreRoute
   '/magazine': typeof MagazineRoute
@@ -126,46 +192,70 @@ export interface FileRoutesByTo {
   '/legale/privacy': typeof LegalePrivacyRoute
   '/legale/termini': typeof LegaleTerminiRoute
   '/trattamenti': typeof TrattamentiIndexRoute
+  '/admin/agenda': typeof AuthenticatedAdminAgendaRoute
+  '/admin/documenti': typeof AuthenticatedAdminDocumentiRoute
+  '/admin/impostazioni': typeof AuthenticatedAdminImpostazioniRoute
+  '/admin/lead': typeof AuthenticatedAdminLeadRoute
+  '/admin/pazienti': typeof AuthenticatedAdminPazientiRoute
   '/trattamenti/$categoria/$slug': typeof TrattamentiCategoriaSlugRoute
+  '/admin': typeof AuthenticatedAdminIndexRoute
   '/trattamenti/$categoria': typeof TrattamentiCategoriaIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
   '/contatti': typeof ContattiRoute
   '/il-dottore': typeof IlDottoreRoute
   '/magazine': typeof MagazineRoute
   '/risultati': typeof RisultatiRoute
   '/testimonianze': typeof TestimonianzeRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/legale/cookie': typeof LegaleCookieRoute
   '/legale/dati-sanitari': typeof LegaleDatiSanitariRoute
   '/legale/diritti': typeof LegaleDirittiRoute
   '/legale/privacy': typeof LegalePrivacyRoute
   '/legale/termini': typeof LegaleTerminiRoute
   '/trattamenti/': typeof TrattamentiIndexRoute
+  '/_authenticated/admin/agenda': typeof AuthenticatedAdminAgendaRoute
+  '/_authenticated/admin/documenti': typeof AuthenticatedAdminDocumentiRoute
+  '/_authenticated/admin/impostazioni': typeof AuthenticatedAdminImpostazioniRoute
+  '/_authenticated/admin/lead': typeof AuthenticatedAdminLeadRoute
+  '/_authenticated/admin/pazienti': typeof AuthenticatedAdminPazientiRoute
   '/trattamenti/$categoria/$slug': typeof TrattamentiCategoriaSlugRoute
+  '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/trattamenti/$categoria/': typeof TrattamentiCategoriaIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/auth'
     | '/contatti'
     | '/il-dottore'
     | '/magazine'
     | '/risultati'
     | '/testimonianze'
+    | '/admin'
     | '/legale/cookie'
     | '/legale/dati-sanitari'
     | '/legale/diritti'
     | '/legale/privacy'
     | '/legale/termini'
     | '/trattamenti/'
+    | '/admin/agenda'
+    | '/admin/documenti'
+    | '/admin/impostazioni'
+    | '/admin/lead'
+    | '/admin/pazienti'
     | '/trattamenti/$categoria/$slug'
+    | '/admin/'
     | '/trattamenti/$categoria/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/auth'
     | '/contatti'
     | '/il-dottore'
     | '/magazine'
@@ -177,28 +267,45 @@ export interface FileRouteTypes {
     | '/legale/privacy'
     | '/legale/termini'
     | '/trattamenti'
+    | '/admin/agenda'
+    | '/admin/documenti'
+    | '/admin/impostazioni'
+    | '/admin/lead'
+    | '/admin/pazienti'
     | '/trattamenti/$categoria/$slug'
+    | '/admin'
     | '/trattamenti/$categoria'
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
+    | '/auth'
     | '/contatti'
     | '/il-dottore'
     | '/magazine'
     | '/risultati'
     | '/testimonianze'
+    | '/_authenticated/admin'
     | '/legale/cookie'
     | '/legale/dati-sanitari'
     | '/legale/diritti'
     | '/legale/privacy'
     | '/legale/termini'
     | '/trattamenti/'
+    | '/_authenticated/admin/agenda'
+    | '/_authenticated/admin/documenti'
+    | '/_authenticated/admin/impostazioni'
+    | '/_authenticated/admin/lead'
+    | '/_authenticated/admin/pazienti'
     | '/trattamenti/$categoria/$slug'
+    | '/_authenticated/admin/'
     | '/trattamenti/$categoria/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
   ContattiRoute: typeof ContattiRoute
   IlDottoreRoute: typeof IlDottoreRoute
   MagazineRoute: typeof MagazineRoute
@@ -221,6 +328,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contatti': {
@@ -257,6 +378,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/testimonianze'
       preLoaderRoute: typeof TestimonianzeRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/legale/cookie': {
       id: '/legale/cookie'
@@ -300,6 +428,48 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TrattamentiIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/admin/': {
+      id: '/_authenticated/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/agenda': {
+      id: '/_authenticated/admin/agenda'
+      path: '/agenda'
+      fullPath: '/admin/agenda'
+      preLoaderRoute: typeof AuthenticatedAdminAgendaRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/documenti': {
+      id: '/_authenticated/admin/documenti'
+      path: '/documenti'
+      fullPath: '/admin/documenti'
+      preLoaderRoute: typeof AuthenticatedAdminDocumentiRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/impostazioni': {
+      id: '/_authenticated/admin/impostazioni'
+      path: '/impostazioni'
+      fullPath: '/admin/impostazioni'
+      preLoaderRoute: typeof AuthenticatedAdminImpostazioniRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/lead': {
+      id: '/_authenticated/admin/lead'
+      path: '/lead'
+      fullPath: '/admin/lead'
+      preLoaderRoute: typeof AuthenticatedAdminLeadRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/pazienti': {
+      id: '/_authenticated/admin/pazienti'
+      path: '/pazienti'
+      fullPath: '/admin/pazienti'
+      preLoaderRoute: typeof AuthenticatedAdminPazientiRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/trattamenti/$categoria/': {
       id: '/trattamenti/$categoria/'
       path: '/trattamenti/$categoria'
@@ -317,8 +487,42 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedAdminRouteChildren {
+  AuthenticatedAdminAgendaRoute: typeof AuthenticatedAdminAgendaRoute
+  AuthenticatedAdminDocumentiRoute: typeof AuthenticatedAdminDocumentiRoute
+  AuthenticatedAdminImpostazioniRoute: typeof AuthenticatedAdminImpostazioniRoute
+  AuthenticatedAdminLeadRoute: typeof AuthenticatedAdminLeadRoute
+  AuthenticatedAdminPazientiRoute: typeof AuthenticatedAdminPazientiRoute
+  AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
+}
+
+const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
+  AuthenticatedAdminAgendaRoute: AuthenticatedAdminAgendaRoute,
+  AuthenticatedAdminDocumentiRoute: AuthenticatedAdminDocumentiRoute,
+  AuthenticatedAdminImpostazioniRoute: AuthenticatedAdminImpostazioniRoute,
+  AuthenticatedAdminLeadRoute: AuthenticatedAdminLeadRoute,
+  AuthenticatedAdminPazientiRoute: AuthenticatedAdminPazientiRoute,
+  AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
+}
+
+const AuthenticatedAdminRouteWithChildren =
+  AuthenticatedAdminRoute._addFileChildren(AuthenticatedAdminRouteChildren)
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRouteWithChildren
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRoute: AuthenticatedAdminRouteWithChildren,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
   ContattiRoute: ContattiRoute,
   IlDottoreRoute: IlDottoreRoute,
   MagazineRoute: MagazineRoute,
