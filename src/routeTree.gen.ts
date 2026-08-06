@@ -24,6 +24,7 @@ import { Route as LegaleDirittiRouteImport } from './routes/legale.diritti'
 import { Route as LegalePrivacyRouteImport } from './routes/legale.privacy'
 import { Route as LegaleTerminiRouteImport } from './routes/legale.termini'
 import { Route as TrattamentiIndexRouteImport } from './routes/trattamenti.index'
+import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
 import { Route as TrattamentiCategoriaIndexRouteImport } from './routes/trattamenti.$categoria.index'
 import { Route as TrattamentiCategoriaSlugRouteImport } from './routes/trattamenti.$categoria.$slug'
 
@@ -101,6 +102,11 @@ const TrattamentiIndexRoute = TrattamentiIndexRouteImport.update({
   path: '/trattamenti/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedAdminRoute,
+} as any)
 const TrattamentiCategoriaIndexRoute =
   TrattamentiCategoriaIndexRouteImport.update({
     id: '/trattamenti/$categoria/',
@@ -122,7 +128,7 @@ export interface FileRoutesByFullPath {
   '/magazine': typeof MagazineRoute
   '/risultati': typeof RisultatiRoute
   '/testimonianze': typeof TestimonianzeRoute
-  '/admin': typeof AuthenticatedAdminRoute
+  '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/legale/cookie': typeof LegaleCookieRoute
   '/legale/dati-sanitari': typeof LegaleDatiSanitariRoute
   '/legale/diritti': typeof LegaleDirittiRoute
@@ -130,6 +136,7 @@ export interface FileRoutesByFullPath {
   '/legale/termini': typeof LegaleTerminiRoute
   '/trattamenti/': typeof TrattamentiIndexRoute
   '/trattamenti/$categoria/$slug': typeof TrattamentiCategoriaSlugRoute
+  '/admin/': typeof AuthenticatedAdminIndexRoute
   '/trattamenti/$categoria/': typeof TrattamentiCategoriaIndexRoute
 }
 export interface FileRoutesByTo {
@@ -140,7 +147,6 @@ export interface FileRoutesByTo {
   '/magazine': typeof MagazineRoute
   '/risultati': typeof RisultatiRoute
   '/testimonianze': typeof TestimonianzeRoute
-  '/admin': typeof AuthenticatedAdminRoute
   '/legale/cookie': typeof LegaleCookieRoute
   '/legale/dati-sanitari': typeof LegaleDatiSanitariRoute
   '/legale/diritti': typeof LegaleDirittiRoute
@@ -148,6 +154,7 @@ export interface FileRoutesByTo {
   '/legale/termini': typeof LegaleTerminiRoute
   '/trattamenti': typeof TrattamentiIndexRoute
   '/trattamenti/$categoria/$slug': typeof TrattamentiCategoriaSlugRoute
+  '/admin': typeof AuthenticatedAdminIndexRoute
   '/trattamenti/$categoria': typeof TrattamentiCategoriaIndexRoute
 }
 export interface FileRoutesById {
@@ -160,7 +167,7 @@ export interface FileRoutesById {
   '/magazine': typeof MagazineRoute
   '/risultati': typeof RisultatiRoute
   '/testimonianze': typeof TestimonianzeRoute
-  '/_authenticated/admin': typeof AuthenticatedAdminRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/legale/cookie': typeof LegaleCookieRoute
   '/legale/dati-sanitari': typeof LegaleDatiSanitariRoute
   '/legale/diritti': typeof LegaleDirittiRoute
@@ -168,6 +175,7 @@ export interface FileRoutesById {
   '/legale/termini': typeof LegaleTerminiRoute
   '/trattamenti/': typeof TrattamentiIndexRoute
   '/trattamenti/$categoria/$slug': typeof TrattamentiCategoriaSlugRoute
+  '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/trattamenti/$categoria/': typeof TrattamentiCategoriaIndexRoute
 }
 export interface FileRouteTypes {
@@ -188,6 +196,7 @@ export interface FileRouteTypes {
     | '/legale/termini'
     | '/trattamenti/'
     | '/trattamenti/$categoria/$slug'
+    | '/admin/'
     | '/trattamenti/$categoria/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -198,7 +207,6 @@ export interface FileRouteTypes {
     | '/magazine'
     | '/risultati'
     | '/testimonianze'
-    | '/admin'
     | '/legale/cookie'
     | '/legale/dati-sanitari'
     | '/legale/diritti'
@@ -206,6 +214,7 @@ export interface FileRouteTypes {
     | '/legale/termini'
     | '/trattamenti'
     | '/trattamenti/$categoria/$slug'
+    | '/admin'
     | '/trattamenti/$categoria'
   id:
     | '__root__'
@@ -225,6 +234,7 @@ export interface FileRouteTypes {
     | '/legale/termini'
     | '/trattamenti/'
     | '/trattamenti/$categoria/$slug'
+    | '/_authenticated/admin/'
     | '/trattamenti/$categoria/'
   fileRoutesById: FileRoutesById
 }
@@ -354,6 +364,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TrattamentiIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/admin/': {
+      id: '/_authenticated/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/trattamenti/$categoria/': {
       id: '/trattamenti/$categoria/'
       path: '/trattamenti/$categoria'
@@ -371,12 +388,23 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedAdminRouteChildren {
+  AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
+}
+
+const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
+  AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
+}
+
+const AuthenticatedAdminRouteWithChildren =
+  AuthenticatedAdminRoute._addFileChildren(AuthenticatedAdminRouteChildren)
+
 interface AuthenticatedRouteRouteChildren {
-  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRouteWithChildren
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
-  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
+  AuthenticatedAdminRoute: AuthenticatedAdminRouteWithChildren,
 }
 
 const AuthenticatedRouteRouteWithChildren =
