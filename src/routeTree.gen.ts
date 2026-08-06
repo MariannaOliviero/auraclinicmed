@@ -10,12 +10,14 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ContattiRouteImport } from './routes/contatti'
 import { Route as IlDottoreRouteImport } from './routes/il-dottore'
 import { Route as MagazineRouteImport } from './routes/magazine'
 import { Route as RisultatiRouteImport } from './routes/risultati'
 import { Route as TestimonianzeRouteImport } from './routes/testimonianze'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as LegaleCookieRouteImport } from './routes/legale.cookie'
 import { Route as LegaleDatiSanitariRouteImport } from './routes/legale.dati-sanitari'
 import { Route as LegaleDirittiRouteImport } from './routes/legale.diritti'
@@ -28,6 +30,10 @@ import { Route as TrattamentiCategoriaSlugRouteImport } from './routes/trattamen
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -59,6 +65,11 @@ const TestimonianzeRoute = TestimonianzeRouteImport.update({
   id: '/testimonianze',
   path: '/testimonianze',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const LegaleCookieRoute = LegaleCookieRouteImport.update({
   id: '/legale/cookie',
@@ -111,6 +122,7 @@ export interface FileRoutesByFullPath {
   '/magazine': typeof MagazineRoute
   '/risultati': typeof RisultatiRoute
   '/testimonianze': typeof TestimonianzeRoute
+  '/admin': typeof AuthenticatedAdminRoute
   '/legale/cookie': typeof LegaleCookieRoute
   '/legale/dati-sanitari': typeof LegaleDatiSanitariRoute
   '/legale/diritti': typeof LegaleDirittiRoute
@@ -128,6 +140,7 @@ export interface FileRoutesByTo {
   '/magazine': typeof MagazineRoute
   '/risultati': typeof RisultatiRoute
   '/testimonianze': typeof TestimonianzeRoute
+  '/admin': typeof AuthenticatedAdminRoute
   '/legale/cookie': typeof LegaleCookieRoute
   '/legale/dati-sanitari': typeof LegaleDatiSanitariRoute
   '/legale/diritti': typeof LegaleDirittiRoute
@@ -140,12 +153,14 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/contatti': typeof ContattiRoute
   '/il-dottore': typeof IlDottoreRoute
   '/magazine': typeof MagazineRoute
   '/risultati': typeof RisultatiRoute
   '/testimonianze': typeof TestimonianzeRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/legale/cookie': typeof LegaleCookieRoute
   '/legale/dati-sanitari': typeof LegaleDatiSanitariRoute
   '/legale/diritti': typeof LegaleDirittiRoute
@@ -165,6 +180,7 @@ export interface FileRouteTypes {
     | '/magazine'
     | '/risultati'
     | '/testimonianze'
+    | '/admin'
     | '/legale/cookie'
     | '/legale/dati-sanitari'
     | '/legale/diritti'
@@ -182,6 +198,7 @@ export interface FileRouteTypes {
     | '/magazine'
     | '/risultati'
     | '/testimonianze'
+    | '/admin'
     | '/legale/cookie'
     | '/legale/dati-sanitari'
     | '/legale/diritti'
@@ -193,12 +210,14 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
     | '/auth'
     | '/contatti'
     | '/il-dottore'
     | '/magazine'
     | '/risultati'
     | '/testimonianze'
+    | '/_authenticated/admin'
     | '/legale/cookie'
     | '/legale/dati-sanitari'
     | '/legale/diritti'
@@ -211,6 +230,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   ContattiRoute: typeof ContattiRoute
   IlDottoreRoute: typeof IlDottoreRoute
@@ -234,6 +254,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -277,6 +304,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/testimonianze'
       preLoaderRoute: typeof TestimonianzeRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/legale/cookie': {
       id: '/legale/cookie'
@@ -337,8 +371,20 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   ContattiRoute: ContattiRoute,
   IlDottoreRoute: IlDottoreRoute,
