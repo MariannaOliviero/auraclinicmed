@@ -51,10 +51,12 @@ function AgendaPage() {
       const parsed = schema.safeParse(form);
       if (!parsed.success) throw new Error(parsed.error.issues[0]!.message);
       const v = parsed.data;
+      const start = new Date(v.starts_at);
       const { error } = await supabase.from("appointments").insert({
         title: v.title,
         kind: v.kind,
-        starts_at: new Date(v.starts_at).toISOString(),
+        starts_at: start.toISOString(),
+        ends_at: new Date(start.getTime() + 60 * 60 * 1000).toISOString(),
         patient_id: v.patient_id || null,
       });
       if (error) throw error;
