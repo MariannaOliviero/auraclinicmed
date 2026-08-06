@@ -76,10 +76,31 @@ function ContactPage() {
     setStep((s) => s + 1);
   };
 
-  const submit = () => {
+  const [sending, setSending] = useState(false);
+
+  const submit = async () => {
     setError(null);
     const result = schema.safeParse(form);
-    if (!result.success) return setError(result.error.issues[0]!.message);
+    if (!result.success) {
+      setError(result.error.issues[0]!.message);
+      return;
+    }
+    setSending(true);
+    const { error: dbError } = await supabase.from("leads").insert({
+      name: result.data.name,
+      email: result.data.email,
+      phone: result.data.phone,
+      interest: result.data.interest,
+      slot: result.data.slot,
+      note: result.data.note ?? null,
+      privacy_consent: true,
+      marketing_consent: form.marketing,
+    });
+    setSending(false);
+    if (dbError) {
+      setError("Invio non riuscito. Riprova o chiamaci direttamente.");
+      return;
+    }
     setDone(true);
   };
 
