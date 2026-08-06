@@ -26,6 +26,7 @@ import { Route as LegaleTerminiRouteImport } from './routes/legale.termini'
 import { Route as TrattamentiIndexRouteImport } from './routes/trattamenti.index'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
 import { Route as AuthenticatedAdminLeadRouteImport } from './routes/_authenticated/admin.lead'
+import { Route as AuthenticatedAdminPazientiRouteImport } from './routes/_authenticated/admin.pazienti'
 import { Route as TrattamentiCategoriaIndexRouteImport } from './routes/trattamenti.$categoria.index'
 import { Route as TrattamentiCategoriaSlugRouteImport } from './routes/trattamenti.$categoria.$slug'
 
@@ -113,6 +114,12 @@ const AuthenticatedAdminLeadRoute = AuthenticatedAdminLeadRouteImport.update({
   path: '/lead',
   getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
+const AuthenticatedAdminPazientiRoute =
+  AuthenticatedAdminPazientiRouteImport.update({
+    id: '/pazienti',
+    path: '/pazienti',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const TrattamentiCategoriaIndexRoute =
   TrattamentiCategoriaIndexRouteImport.update({
     id: '/trattamenti/$categoria/',
@@ -142,6 +149,7 @@ export interface FileRoutesByFullPath {
   '/legale/termini': typeof LegaleTerminiRoute
   '/trattamenti/': typeof TrattamentiIndexRoute
   '/admin/lead': typeof AuthenticatedAdminLeadRoute
+  '/admin/pazienti': typeof AuthenticatedAdminPazientiRoute
   '/trattamenti/$categoria/$slug': typeof TrattamentiCategoriaSlugRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/trattamenti/$categoria/': typeof TrattamentiCategoriaIndexRoute
@@ -161,6 +169,7 @@ export interface FileRoutesByTo {
   '/legale/termini': typeof LegaleTerminiRoute
   '/trattamenti': typeof TrattamentiIndexRoute
   '/admin/lead': typeof AuthenticatedAdminLeadRoute
+  '/admin/pazienti': typeof AuthenticatedAdminPazientiRoute
   '/trattamenti/$categoria/$slug': typeof TrattamentiCategoriaSlugRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/trattamenti/$categoria': typeof TrattamentiCategoriaIndexRoute
@@ -183,6 +192,7 @@ export interface FileRoutesById {
   '/legale/termini': typeof LegaleTerminiRoute
   '/trattamenti/': typeof TrattamentiIndexRoute
   '/_authenticated/admin/lead': typeof AuthenticatedAdminLeadRoute
+  '/_authenticated/admin/pazienti': typeof AuthenticatedAdminPazientiRoute
   '/trattamenti/$categoria/$slug': typeof TrattamentiCategoriaSlugRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/trattamenti/$categoria/': typeof TrattamentiCategoriaIndexRoute
@@ -205,6 +215,7 @@ export interface FileRouteTypes {
     | '/legale/termini'
     | '/trattamenti/'
     | '/admin/lead'
+    | '/admin/pazienti'
     | '/trattamenti/$categoria/$slug'
     | '/admin/'
     | '/trattamenti/$categoria/'
@@ -224,6 +235,7 @@ export interface FileRouteTypes {
     | '/legale/termini'
     | '/trattamenti'
     | '/admin/lead'
+    | '/admin/pazienti'
     | '/trattamenti/$categoria/$slug'
     | '/admin'
     | '/trattamenti/$categoria'
@@ -245,6 +257,7 @@ export interface FileRouteTypes {
     | '/legale/termini'
     | '/trattamenti/'
     | '/_authenticated/admin/lead'
+    | '/_authenticated/admin/pazienti'
     | '/trattamenti/$categoria/$slug'
     | '/_authenticated/admin/'
     | '/trattamenti/$categoria/'
@@ -390,6 +403,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminLeadRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/pazienti': {
+      id: '/_authenticated/admin/pazienti'
+      path: '/pazienti'
+      fullPath: '/admin/pazienti'
+      preLoaderRoute: typeof AuthenticatedAdminPazientiRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/trattamenti/$categoria/': {
       id: '/trattamenti/$categoria/'
       path: '/trattamenti/$categoria'
@@ -409,11 +429,13 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminLeadRoute: typeof AuthenticatedAdminLeadRoute
+  AuthenticatedAdminPazientiRoute: typeof AuthenticatedAdminPazientiRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
 }
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminLeadRoute: AuthenticatedAdminLeadRoute,
+  AuthenticatedAdminPazientiRoute: AuthenticatedAdminPazientiRoute,
   AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
 }
 
