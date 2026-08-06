@@ -27,6 +27,7 @@ import { Route as TrattamentiIndexRouteImport } from './routes/trattamenti.index
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
 import { Route as AuthenticatedAdminAgendaRouteImport } from './routes/_authenticated/admin.agenda'
 import { Route as AuthenticatedAdminDocumentiRouteImport } from './routes/_authenticated/admin.documenti'
+import { Route as AuthenticatedAdminImpostazioniRouteImport } from './routes/_authenticated/admin.impostazioni'
 import { Route as AuthenticatedAdminLeadRouteImport } from './routes/_authenticated/admin.lead'
 import { Route as AuthenticatedAdminPazientiRouteImport } from './routes/_authenticated/admin.pazienti'
 import { Route as TrattamentiCategoriaIndexRouteImport } from './routes/trattamenti.$categoria.index'
@@ -123,6 +124,12 @@ const AuthenticatedAdminDocumentiRoute =
     path: '/documenti',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminImpostazioniRoute =
+  AuthenticatedAdminImpostazioniRouteImport.update({
+    id: '/impostazioni',
+    path: '/impostazioni',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminLeadRoute = AuthenticatedAdminLeadRouteImport.update({
   id: '/lead',
   path: '/lead',
@@ -164,6 +171,7 @@ export interface FileRoutesByFullPath {
   '/trattamenti/': typeof TrattamentiIndexRoute
   '/admin/agenda': typeof AuthenticatedAdminAgendaRoute
   '/admin/documenti': typeof AuthenticatedAdminDocumentiRoute
+  '/admin/impostazioni': typeof AuthenticatedAdminImpostazioniRoute
   '/admin/lead': typeof AuthenticatedAdminLeadRoute
   '/admin/pazienti': typeof AuthenticatedAdminPazientiRoute
   '/trattamenti/$categoria/$slug': typeof TrattamentiCategoriaSlugRoute
@@ -186,6 +194,7 @@ export interface FileRoutesByTo {
   '/trattamenti': typeof TrattamentiIndexRoute
   '/admin/agenda': typeof AuthenticatedAdminAgendaRoute
   '/admin/documenti': typeof AuthenticatedAdminDocumentiRoute
+  '/admin/impostazioni': typeof AuthenticatedAdminImpostazioniRoute
   '/admin/lead': typeof AuthenticatedAdminLeadRoute
   '/admin/pazienti': typeof AuthenticatedAdminPazientiRoute
   '/trattamenti/$categoria/$slug': typeof TrattamentiCategoriaSlugRoute
@@ -211,6 +220,7 @@ export interface FileRoutesById {
   '/trattamenti/': typeof TrattamentiIndexRoute
   '/_authenticated/admin/agenda': typeof AuthenticatedAdminAgendaRoute
   '/_authenticated/admin/documenti': typeof AuthenticatedAdminDocumentiRoute
+  '/_authenticated/admin/impostazioni': typeof AuthenticatedAdminImpostazioniRoute
   '/_authenticated/admin/lead': typeof AuthenticatedAdminLeadRoute
   '/_authenticated/admin/pazienti': typeof AuthenticatedAdminPazientiRoute
   '/trattamenti/$categoria/$slug': typeof TrattamentiCategoriaSlugRoute
@@ -236,6 +246,7 @@ export interface FileRouteTypes {
     | '/trattamenti/'
     | '/admin/agenda'
     | '/admin/documenti'
+    | '/admin/impostazioni'
     | '/admin/lead'
     | '/admin/pazienti'
     | '/trattamenti/$categoria/$slug'
@@ -258,6 +269,7 @@ export interface FileRouteTypes {
     | '/trattamenti'
     | '/admin/agenda'
     | '/admin/documenti'
+    | '/admin/impostazioni'
     | '/admin/lead'
     | '/admin/pazienti'
     | '/trattamenti/$categoria/$slug'
@@ -282,6 +294,7 @@ export interface FileRouteTypes {
     | '/trattamenti/'
     | '/_authenticated/admin/agenda'
     | '/_authenticated/admin/documenti'
+    | '/_authenticated/admin/impostazioni'
     | '/_authenticated/admin/lead'
     | '/_authenticated/admin/pazienti'
     | '/trattamenti/$categoria/$slug'
@@ -436,6 +449,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminDocumentiRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/impostazioni': {
+      id: '/_authenticated/admin/impostazioni'
+      path: '/impostazioni'
+      fullPath: '/admin/impostazioni'
+      preLoaderRoute: typeof AuthenticatedAdminImpostazioniRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/lead': {
       id: '/_authenticated/admin/lead'
       path: '/lead'
@@ -470,6 +490,7 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminAgendaRoute: typeof AuthenticatedAdminAgendaRoute
   AuthenticatedAdminDocumentiRoute: typeof AuthenticatedAdminDocumentiRoute
+  AuthenticatedAdminImpostazioniRoute: typeof AuthenticatedAdminImpostazioniRoute
   AuthenticatedAdminLeadRoute: typeof AuthenticatedAdminLeadRoute
   AuthenticatedAdminPazientiRoute: typeof AuthenticatedAdminPazientiRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
@@ -478,6 +499,7 @@ interface AuthenticatedAdminRouteChildren {
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminAgendaRoute: AuthenticatedAdminAgendaRoute,
   AuthenticatedAdminDocumentiRoute: AuthenticatedAdminDocumentiRoute,
+  AuthenticatedAdminImpostazioniRoute: AuthenticatedAdminImpostazioniRoute,
   AuthenticatedAdminLeadRoute: AuthenticatedAdminLeadRoute,
   AuthenticatedAdminPazientiRoute: AuthenticatedAdminPazientiRoute,
   AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
