@@ -137,7 +137,9 @@ function RootComponent() {
         </motion.main>
       </AnimatePresence>
       {!isAdmin && <SiteFooter />}
-      <CookieBanner />
+      {!isAdmin && <CookieBanner />}
+      <Toaster position="top-center" />
     </QueryClientProvider>
+
   );
 }
