@@ -22,7 +22,7 @@ function LeadsPage() {
   });
 
   const update = useMutation({
-    mutationFn: async ({ id, patch }: { id: string; patch: Record<string, unknown> }) => {
+    mutationFn: async ({ id, patch }: { id: string; patch: { status?: string; internal_note?: string } }) => {
       const { error } = await supabase.from("leads").update(patch).eq("id", id);
       if (error) throw error;
     },

@@ -25,6 +25,7 @@ import { Route as LegalePrivacyRouteImport } from './routes/legale.privacy'
 import { Route as LegaleTerminiRouteImport } from './routes/legale.termini'
 import { Route as TrattamentiIndexRouteImport } from './routes/trattamenti.index'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
+import { Route as AuthenticatedAdminLeadRouteImport } from './routes/_authenticated/admin.lead'
 import { Route as TrattamentiCategoriaIndexRouteImport } from './routes/trattamenti.$categoria.index'
 import { Route as TrattamentiCategoriaSlugRouteImport } from './routes/trattamenti.$categoria.$slug'
 
@@ -107,6 +108,11 @@ const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
+const AuthenticatedAdminLeadRoute = AuthenticatedAdminLeadRouteImport.update({
+  id: '/lead',
+  path: '/lead',
+  getParentRoute: () => AuthenticatedAdminRoute,
+} as any)
 const TrattamentiCategoriaIndexRoute =
   TrattamentiCategoriaIndexRouteImport.update({
     id: '/trattamenti/$categoria/',
@@ -135,6 +141,7 @@ export interface FileRoutesByFullPath {
   '/legale/privacy': typeof LegalePrivacyRoute
   '/legale/termini': typeof LegaleTerminiRoute
   '/trattamenti/': typeof TrattamentiIndexRoute
+  '/admin/lead': typeof AuthenticatedAdminLeadRoute
   '/trattamenti/$categoria/$slug': typeof TrattamentiCategoriaSlugRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/trattamenti/$categoria/': typeof TrattamentiCategoriaIndexRoute
@@ -153,6 +160,7 @@ export interface FileRoutesByTo {
   '/legale/privacy': typeof LegalePrivacyRoute
   '/legale/termini': typeof LegaleTerminiRoute
   '/trattamenti': typeof TrattamentiIndexRoute
+  '/admin/lead': typeof AuthenticatedAdminLeadRoute
   '/trattamenti/$categoria/$slug': typeof TrattamentiCategoriaSlugRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/trattamenti/$categoria': typeof TrattamentiCategoriaIndexRoute
@@ -174,6 +182,7 @@ export interface FileRoutesById {
   '/legale/privacy': typeof LegalePrivacyRoute
   '/legale/termini': typeof LegaleTerminiRoute
   '/trattamenti/': typeof TrattamentiIndexRoute
+  '/_authenticated/admin/lead': typeof AuthenticatedAdminLeadRoute
   '/trattamenti/$categoria/$slug': typeof TrattamentiCategoriaSlugRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/trattamenti/$categoria/': typeof TrattamentiCategoriaIndexRoute
@@ -195,6 +204,7 @@ export interface FileRouteTypes {
     | '/legale/privacy'
     | '/legale/termini'
     | '/trattamenti/'
+    | '/admin/lead'
     | '/trattamenti/$categoria/$slug'
     | '/admin/'
     | '/trattamenti/$categoria/'
@@ -213,6 +223,7 @@ export interface FileRouteTypes {
     | '/legale/privacy'
     | '/legale/termini'
     | '/trattamenti'
+    | '/admin/lead'
     | '/trattamenti/$categoria/$slug'
     | '/admin'
     | '/trattamenti/$categoria'
@@ -233,6 +244,7 @@ export interface FileRouteTypes {
     | '/legale/privacy'
     | '/legale/termini'
     | '/trattamenti/'
+    | '/_authenticated/admin/lead'
     | '/trattamenti/$categoria/$slug'
     | '/_authenticated/admin/'
     | '/trattamenti/$categoria/'
@@ -371,6 +383,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/lead': {
+      id: '/_authenticated/admin/lead'
+      path: '/lead'
+      fullPath: '/admin/lead'
+      preLoaderRoute: typeof AuthenticatedAdminLeadRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/trattamenti/$categoria/': {
       id: '/trattamenti/$categoria/'
       path: '/trattamenti/$categoria'
@@ -389,10 +408,12 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedAdminRouteChildren {
+  AuthenticatedAdminLeadRoute: typeof AuthenticatedAdminLeadRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
 }
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
+  AuthenticatedAdminLeadRoute: AuthenticatedAdminLeadRoute,
   AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
 }
 
