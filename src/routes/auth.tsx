@@ -58,7 +58,10 @@ function AuthPage() {
 
   const submit = async () => {
     const parsed = credentials.safeParse({ email, password });
-    if (!parsed.success) return toast.error(parsed.error.issues[0]!.message);
+    if (!parsed.success) {
+      toast.error(parsed.error.issues[0]!.message);
+      return;
+    }
     setLoading(true);
     try {
       if (mode === "login") {
