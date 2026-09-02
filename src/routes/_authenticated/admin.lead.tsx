@@ -1,28 +1,72 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { UserCheck, ArrowRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/_authenticated/admin/lead")({
   component: LeadsPage,
 });
 
-const STATUSES = ["nuovo", "contattato", "consulenza-fissata", "chiuso"] as const;
+const STATUSES = [
+  { value: "nuovo", label: "Nuovo" },
+  { value: "contattato", label: "Contattato" },
+  { value: "consulenza-fissata", label: "Consulenza fissata" },
+  { value: "chiuso", label: "Chiuso" },
+  { value: "convertito", label: "Convertito" },
+] as const;
 
 function LeadsPage() {
   const qc = useQueryClient();
+  const [noteDraft, setNoteDraft] = useState<Record<string, string>>({});
+
   const { data: leads } = useQuery({
     queryKey: ["leads"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("leads").select("*").order("created_at", { ascending: false });
+      const { data, error } = await supabase
+        .from("leads")
+        .select("*")
+        .order("created_at", { ascending: false });
       if (error) throw error;
       return data;
     },
   });
 
-  const update = useMutation({
-    mutationFn: async ({ id, patch }: { id: string; patch: { status?: string; internal_note?: string } }) => {
+  const { data: staff } = useQuery({
+    queryKey: ["staff-profiles"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("id, full_name, email")
+        .order("full_name");
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const { data: notes } = useQuery({
+    queryKey: ["lead_notes"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("lead_notes")
+        .select("*, profiles(full_name)")
+        .order("created_at", { ascending: false });
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const updateLead = useMutation({
+    mutationFn: async ({
+      id,
+      patch,
+    }: {
+      id: string;
+      patch: { status?: string; internal_note?: string; assigned_to?: string | null };
+    }) => {
       const { error } = await supabase.from("leads").update(patch).eq("id", id);
       if (error) throw error;
     },
@@ -33,6 +77,46 @@ function LeadsPage() {
     onError: () => toast.error("Aggiornamento non riuscito"),
   });
 
+  const convert = useMutation({
+    mutationFn: async (leadId: string) => {
+      const { data, error } = await supabase.rpc("convert_lead_to_patient", {
+        _lead_id: leadId,
+      });
+      if (error) throw error;
+      return data as string;
+    },
+    onSuccess: (patientId) => {
+      qc.invalidateQueries({ queryKey: ["leads"] });
+      qc.invalidateQueries({ queryKey: ["patients"] });
+      toast.success("Lead convertito in paziente");
+      if (patientId) {
+        qc.setQueryData(["patient-converted-from", patientId], true);
+      }
+    },
+    onError: (e) => toast.error(e instanceof Error ? e.message : "Conversione non riuscita"),
+  });
+
+  const addNote = useMutation({
+    mutationFn: async ({ leadId, text }: { leadId: string; text: string }) => {
+      const { data: userData, error: userError } = await supabase.auth.getUser();
+      if (userError || !userData.user) throw new Error("Utente non autenticato");
+      const { error } = await supabase.from("lead_notes").insert({
+        lead_id: leadId,
+        note: text.trim(),
+        author_id: userData.user.id,
+      });
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["lead_notes"] });
+      toast.success("Nota aggiunta");
+    },
+    onError: () => toast.error("Salvataggio nota non riuscito"),
+  });
+
+  const notesByLead = (leadId: string) =>
+    (notes ?? []).filter((n) => n.lead_id === leadId);
+
   return (
     <div className="mx-auto max-w-5xl">
       <p className="eyebrow">Gestionale</p>
@@ -42,15 +126,20 @@ function LeadsPage() {
         consenso raccolto in fase di invio.
       </p>
 
-      <div className="mt-10 space-y-4">
+      <div className="mt-10 space-y-5">
         {(leads ?? []).map((l) => (
           <div key={l.id} className="card-aura p-6">
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div>
                 <div className="text-lg font-semibold tracking-[-0.02em]">{l.name}</div>
                 <div className="mt-1 text-sm text-muted-foreground">
-                  <a href={`mailto:${l.email}`} className="hover:text-foreground">{l.email}</a> ·{" "}
-                  <a href={`tel:${l.phone}`} className="hover:text-foreground">{l.phone}</a>
+                  <a href={`mailto:${l.email}`} className="hover:text-foreground">
+                    {l.email}
+                  </a>{" "}
+                  ·{" "}
+                  <a href={`tel:${l.phone}`} className="hover:text-foreground">
+                    {l.phone}
+                  </a>
                 </div>
                 <div className="mt-2 text-sm text-muted-foreground">
                   {l.interest ?? "—"} · disponibilità: {l.slot ?? "—"}
@@ -59,15 +148,21 @@ function LeadsPage() {
               <div className="text-right">
                 <select
                   value={l.status}
-                  onChange={(e) => update.mutate({ id: l.id, patch: { status: e.target.value } })}
+                  onChange={(e) => updateLead.mutate({ id: l.id, patch: { status: e.target.value } })}
+                  disabled={updateLead.isPending}
                   className="h-10 rounded-xl border border-border bg-background px-3 text-sm"
                 >
                   {STATUSES.map((s) => (
-                    <option key={s} value={s}>{s}</option>
+                    <option key={s.value} value={s.value}>
+                      {s.label}
+                    </option>
                   ))}
                 </select>
                 <div className="mt-2 text-xs text-muted-foreground">
-                  {new Date(l.created_at).toLocaleString("it-IT", { dateStyle: "medium", timeStyle: "short" })}
+                  {new Date(l.created_at).toLocaleString("it-IT", {
+                    dateStyle: "medium",
+                    timeStyle: "short",
+                  })}
                 </div>
                 <div className="mt-1 text-xs text-muted-foreground">
                   Marketing: {l.marketing_consent ? "sì" : "no"}
@@ -75,18 +170,126 @@ function LeadsPage() {
               </div>
             </div>
 
-            {l.note && <p className="mt-4 rounded-xl bg-muted p-4 text-sm">{l.note}</p>}
+            <div className="mt-5 grid gap-4 sm:grid-cols-2">
+              <div>
+                <label className="mb-1.5 block text-xs font-medium text-muted-foreground">
+                  Assegnato a
+                </label>
+                <select
+                  value={l.assigned_to ?? ""}
+                  onChange={(e) =>
+                    updateLead.mutate({
+                      id: l.id,
+                      patch: { assigned_to: e.target.value || null },
+                    })
+                  }
+                  disabled={updateLead.isPending}
+                  className="h-10 w-full rounded-xl border border-border bg-background px-3 text-sm"
+                >
+                  <option value="">— Non assegnato —</option>
+                  {(staff ?? []).map((s) => (
+                    <option key={s.id} value={s.id}>
+                      {s.full_name ?? s.email}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="flex items-end justify-start sm:justify-end">
+                {l.converted_patient_id ? (
+                  <Link
+                    to="/admin/pazienti"
+                    className="inline-flex items-center gap-2 rounded-full bg-sage/15 px-4 py-2 text-sm font-medium text-sage hover:bg-sage/20"
+                  >
+                    <UserCheck className="size-4" />
+                    Convertito in paziente
+                    <ArrowRight className="size-4" />
+                  </Link>
+                ) : (
+                  <Button
+                    variant="hero"
+                    size="sm"
+                    disabled={convert.isPending}
+                    onClick={() => convert.mutate(l.id)}
+                  >
+                    <UserCheck className="size-4" />
+                    Converti in paziente
+                  </Button>
+                )}
+              </div>
+            </div>
+
+            {l.note && (
+              <p className="mt-5 rounded-xl bg-muted p-4 text-sm text-foreground/90">
+                <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+                  Richiesta del cliente
+                </span>
+                <span className="mt-1 block">{l.note}</span>
+              </p>
+            )}
 
             <Textarea
               defaultValue={l.internal_note ?? ""}
-              placeholder="Nota interna…"
-              className="mt-4 min-h-20 rounded-xl"
+              placeholder="Nota interna persistente sul lead…"
+              className="mt-5 min-h-20 rounded-xl"
               onBlur={(e) => {
                 if (e.target.value !== (l.internal_note ?? "")) {
-                  update.mutate({ id: l.id, patch: { internal_note: e.target.value } });
+                  updateLead.mutate({ id: l.id, patch: { internal_note: e.target.value } });
                 }
               }}
             />
+
+            <div className="mt-6 border-t border-border pt-5">
+              <h3 className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                Note interne ({notesByLead(l.id).length})
+              </h3>
+              <div className="mt-3 space-y-3">
+                {notesByLead(l.id).map((n) => (
+                  <div key={n.id} className="rounded-xl bg-muted/60 p-3 text-sm">
+                    <p className="text-foreground/90">{n.note}</p>
+                    <div className="mt-2 flex items-center gap-2 text-xs text-muted-foreground">
+                      <span>{(n.profiles as { full_name?: string } | null)?.full_name ?? "Staff"}</span>
+                      <span>·</span>
+                      <span>
+                        {new Date(n.created_at).toLocaleString("it-IT", {
+                          dateStyle: "short",
+                          timeStyle: "short",
+                        })}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-3 flex items-start gap-2">
+                <Textarea
+                  value={noteDraft[l.id] ?? ""}
+                  onChange={(e) =>
+                    setNoteDraft((prev) => ({ ...prev, [l.id]: e.target.value }))
+                  }
+                  placeholder="Aggiungi una nota interna…"
+                  className="min-h-[72px] flex-1 rounded-xl text-sm"
+                />
+                <Button
+                  variant="quiet"
+                  size="sm"
+                  className="mt-1"
+                  disabled={!noteDraft[l.id]?.trim() || addNote.isPending}
+                  onClick={() => {
+                    const text = noteDraft[l.id]?.trim();
+                    if (!text) return;
+                    addNote.mutate(
+                      { leadId: l.id, text },
+                      {
+                        onSuccess: () =>
+                          setNoteDraft((prev) => ({ ...prev, [l.id]: "" })),
+                      }
+                    );
+                  }}
+                >
+                  Salva
+                </Button>
+              </div>
+            </div>
           </div>
         ))}
         {(leads?.length ?? 0) === 0 && (
