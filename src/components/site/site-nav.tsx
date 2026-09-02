@@ -53,7 +53,7 @@ export function SiteNav() {
               <Link
                 key={l.to}
                 to={l.to}
-                className="relative text-[0.9rem] text-muted-foreground transition-colors duration-300 hover:text-foreground data-[status=active]:text-foreground"
+                className="relative text-[0.9rem] text-foreground/85 transition-colors duration-300 hover:text-foreground data-[status=active]:text-foreground"
               >
                 {l.label}
               </Link>
