@@ -78,7 +78,7 @@ function Home() {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.18, ease: EASE }}
-            className="lede mt-7 max-w-2xl text-foreground/90"
+            className="lede mt-7 max-w-2xl !text-foreground/90"
           >
             Un percorso su misura, guidato dall'esperienza chirurgica e da un ascolto autentico.
             Perché ogni scelta estetica comincia da una domanda: chi vuoi essere, ancora più te
