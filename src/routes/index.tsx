@@ -49,7 +49,7 @@ function Home() {
             height={1200}
             className="size-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/30 to-background" />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/45 to-background" />
         </motion.div>
 
         <motion.div
