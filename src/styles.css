@@ -225,7 +225,7 @@
 @utility lede {
   font-size: clamp(1.0625rem, 1.5vw, 1.3125rem);
   line-height: 1.55;
-  color: var(--color-muted-foreground);
+  color: color-mix(in oklab, var(--color-foreground) 78%, var(--color-muted-foreground));
   font-weight: 400;
   text-wrap: pretty;
 }
