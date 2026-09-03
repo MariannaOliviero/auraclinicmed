@@ -30,6 +30,7 @@ import { Route as AuthenticatedAdminDocumentiRouteImport } from './routes/_authe
 import { Route as AuthenticatedAdminImpostazioniRouteImport } from './routes/_authenticated/admin.impostazioni'
 import { Route as AuthenticatedAdminLeadRouteImport } from './routes/_authenticated/admin.lead'
 import { Route as AuthenticatedAdminPazientiRouteImport } from './routes/_authenticated/admin.pazienti'
+import { Route as AuthenticatedAdminRisultatiRouteImport } from './routes/_authenticated/admin.risultati'
 import { Route as TrattamentiCategoriaIndexRouteImport } from './routes/trattamenti.$categoria.index'
 import { Route as TrattamentiCategoriaSlugRouteImport } from './routes/trattamenti.$categoria.$slug'
 
@@ -141,6 +142,12 @@ const AuthenticatedAdminPazientiRoute =
     path: '/pazienti',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminRisultatiRoute =
+  AuthenticatedAdminRisultatiRouteImport.update({
+    id: '/risultati',
+    path: '/risultati',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const TrattamentiCategoriaIndexRoute =
   TrattamentiCategoriaIndexRouteImport.update({
     id: '/trattamenti/$categoria/',
@@ -174,6 +181,7 @@ export interface FileRoutesByFullPath {
   '/admin/impostazioni': typeof AuthenticatedAdminImpostazioniRoute
   '/admin/lead': typeof AuthenticatedAdminLeadRoute
   '/admin/pazienti': typeof AuthenticatedAdminPazientiRoute
+  '/admin/risultati': typeof AuthenticatedAdminRisultatiRoute
   '/trattamenti/$categoria/$slug': typeof TrattamentiCategoriaSlugRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/trattamenti/$categoria/': typeof TrattamentiCategoriaIndexRoute
@@ -197,6 +205,7 @@ export interface FileRoutesByTo {
   '/admin/impostazioni': typeof AuthenticatedAdminImpostazioniRoute
   '/admin/lead': typeof AuthenticatedAdminLeadRoute
   '/admin/pazienti': typeof AuthenticatedAdminPazientiRoute
+  '/admin/risultati': typeof AuthenticatedAdminRisultatiRoute
   '/trattamenti/$categoria/$slug': typeof TrattamentiCategoriaSlugRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/trattamenti/$categoria': typeof TrattamentiCategoriaIndexRoute
@@ -223,6 +232,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/impostazioni': typeof AuthenticatedAdminImpostazioniRoute
   '/_authenticated/admin/lead': typeof AuthenticatedAdminLeadRoute
   '/_authenticated/admin/pazienti': typeof AuthenticatedAdminPazientiRoute
+  '/_authenticated/admin/risultati': typeof AuthenticatedAdminRisultatiRoute
   '/trattamenti/$categoria/$slug': typeof TrattamentiCategoriaSlugRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/trattamenti/$categoria/': typeof TrattamentiCategoriaIndexRoute
@@ -249,6 +259,7 @@ export interface FileRouteTypes {
     | '/admin/impostazioni'
     | '/admin/lead'
     | '/admin/pazienti'
+    | '/admin/risultati'
     | '/trattamenti/$categoria/$slug'
     | '/admin/'
     | '/trattamenti/$categoria/'
@@ -272,6 +283,7 @@ export interface FileRouteTypes {
     | '/admin/impostazioni'
     | '/admin/lead'
     | '/admin/pazienti'
+    | '/admin/risultati'
     | '/trattamenti/$categoria/$slug'
     | '/admin'
     | '/trattamenti/$categoria'
@@ -297,6 +309,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/impostazioni'
     | '/_authenticated/admin/lead'
     | '/_authenticated/admin/pazienti'
+    | '/_authenticated/admin/risultati'
     | '/trattamenti/$categoria/$slug'
     | '/_authenticated/admin/'
     | '/trattamenti/$categoria/'
@@ -470,6 +483,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminPazientiRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/risultati': {
+      id: '/_authenticated/admin/risultati'
+      path: '/risultati'
+      fullPath: '/admin/risultati'
+      preLoaderRoute: typeof AuthenticatedAdminRisultatiRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/trattamenti/$categoria/': {
       id: '/trattamenti/$categoria/'
       path: '/trattamenti/$categoria'
@@ -493,6 +513,7 @@ interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminImpostazioniRoute: typeof AuthenticatedAdminImpostazioniRoute
   AuthenticatedAdminLeadRoute: typeof AuthenticatedAdminLeadRoute
   AuthenticatedAdminPazientiRoute: typeof AuthenticatedAdminPazientiRoute
+  AuthenticatedAdminRisultatiRoute: typeof AuthenticatedAdminRisultatiRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
 }
 
@@ -502,6 +523,7 @@ const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminImpostazioniRoute: AuthenticatedAdminImpostazioniRoute,
   AuthenticatedAdminLeadRoute: AuthenticatedAdminLeadRoute,
   AuthenticatedAdminPazientiRoute: AuthenticatedAdminPazientiRoute,
+  AuthenticatedAdminRisultatiRoute: AuthenticatedAdminRisultatiRoute,
   AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
 }
 

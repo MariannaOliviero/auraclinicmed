@@ -61,6 +61,93 @@ export type Database = {
           },
         ]
       }
+      case_photos: {
+        Row: {
+          after_path: string | null
+          after_public_path: string | null
+          before_path: string | null
+          before_public_path: string | null
+          category: string
+          consent_at: string | null
+          consent_document_id: string | null
+          consent_revoked_at: string | null
+          consent_signer: string | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          face_anonymized: boolean
+          id: string
+          meta: string | null
+          patient_id: string | null
+          publication_consent: boolean
+          published: boolean
+          sort_order: number
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          after_path?: string | null
+          after_public_path?: string | null
+          before_path?: string | null
+          before_public_path?: string | null
+          category?: string
+          consent_at?: string | null
+          consent_document_id?: string | null
+          consent_revoked_at?: string | null
+          consent_signer?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          face_anonymized?: boolean
+          id?: string
+          meta?: string | null
+          patient_id?: string | null
+          publication_consent?: boolean
+          published?: boolean
+          sort_order?: number
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          after_path?: string | null
+          after_public_path?: string | null
+          before_path?: string | null
+          before_public_path?: string | null
+          category?: string
+          consent_at?: string | null
+          consent_document_id?: string | null
+          consent_revoked_at?: string | null
+          consent_signer?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          face_anonymized?: boolean
+          id?: string
+          meta?: string | null
+          patient_id?: string | null
+          publication_consent?: boolean
+          published?: boolean
+          sort_order?: number
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "case_photos_consent_document_id_fkey"
+            columns: ["consent_document_id"]
+            isOneToOne: false
+            referencedRelation: "documents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "case_photos_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "patients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       documents: {
         Row: {
           created_at: string
