@@ -1,6 +1,15 @@
 import { createFileRoute, Link, Outlet, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
-import { CalendarDays, FileSignature, LayoutDashboard, LogOut, Sparkle, UserRound, Users } from "lucide-react";
+import {
+  CalendarClock,
+  CalendarDays,
+  FileSignature,
+  LayoutDashboard,
+  LogOut,
+  Sparkle,
+  UserRound,
+  Users,
+} from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useStaff } from "@/hooks/use-staff";
 import { Button } from "@/components/ui/button";
@@ -14,6 +23,7 @@ const nav = [
   { to: "/admin/lead", label: "Lead", icon: Sparkle, exact: false },
   { to: "/admin/pazienti", label: "Pazienti", icon: Users, exact: false },
   { to: "/admin/agenda", label: "Agenda", icon: CalendarDays, exact: false },
+  { to: "/admin/turni", label: "Turni", icon: CalendarClock, exact: false },
   { to: "/admin/documenti", label: "Documenti", icon: FileSignature, exact: false },
   { to: "/admin/impostazioni", label: "Team", icon: UserRound, exact: false },
 ] as const;
@@ -72,7 +82,11 @@ function AdminLayout() {
       <div className="flex min-w-0 flex-1 flex-col">
         <div className="flex items-center gap-3 overflow-x-auto border-b border-border bg-background/80 px-4 py-3 backdrop-blur-xl md:hidden">
           {nav.map((item) => (
-            <Link key={item.to} to={item.to} className="whitespace-nowrap text-sm text-muted-foreground">
+            <Link
+              key={item.to}
+              to={item.to}
+              className="whitespace-nowrap text-sm text-muted-foreground"
+            >
               {item.label}
             </Link>
           ))}
