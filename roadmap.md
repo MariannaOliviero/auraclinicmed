@@ -1,6 +1,7 @@
 # AURA Clinic — Roadmap
 
 ## In corso
+- [x] Galleria prima/dopo: caricamento foto reali con filigrana, consenso e pubblicazione.
 - [ ] Creare un utente staff/admin per test end-to-end del gestionale.
 
 ## Completati
