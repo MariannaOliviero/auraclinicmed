@@ -1,9 +1,8 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { z } from "zod";
-import { CalendarPlus } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -98,37 +97,12 @@ function PatientsPage() {
       {open && (
         <div className="card-aura mt-8 p-6 md:p-8">
           <div className="grid gap-5 sm:grid-cols-2">
-            <Field
-              label="Nome"
-              value={form.first_name}
-              onChange={(v) => setForm({ ...form, first_name: v })}
-            />
-            <Field
-              label="Cognome"
-              value={form.last_name}
-              onChange={(v) => setForm({ ...form, last_name: v })}
-            />
-            <Field
-              label="Email"
-              value={form.email}
-              onChange={(v) => setForm({ ...form, email: v })}
-            />
-            <Field
-              label="Telefono"
-              value={form.phone}
-              onChange={(v) => setForm({ ...form, phone: v })}
-            />
-            <Field
-              label="Data di nascita"
-              type="date"
-              value={form.birth_date}
-              onChange={(v) => setForm({ ...form, birth_date: v })}
-            />
-            <Field
-              label="Codice fiscale"
-              value={form.fiscal_code}
-              onChange={(v) => setForm({ ...form, fiscal_code: v })}
-            />
+            <Field label="Nome" value={form.first_name} onChange={(v) => setForm({ ...form, first_name: v })} />
+            <Field label="Cognome" value={form.last_name} onChange={(v) => setForm({ ...form, last_name: v })} />
+            <Field label="Email" value={form.email} onChange={(v) => setForm({ ...form, email: v })} />
+            <Field label="Telefono" value={form.phone} onChange={(v) => setForm({ ...form, phone: v })} />
+            <Field label="Data di nascita" type="date" value={form.birth_date} onChange={(v) => setForm({ ...form, birth_date: v })} />
+            <Field label="Codice fiscale" value={form.fiscal_code} onChange={(v) => setForm({ ...form, fiscal_code: v })} />
           </div>
           <div className="mt-5">
             <Label htmlFor="note">Note cliniche</Label>
@@ -151,13 +125,7 @@ function PatientsPage() {
               e archiviato in studio.
             </span>
           </label>
-          <Button
-            variant="hero"
-            size="pill"
-            className="mt-7"
-            disabled={create.isPending}
-            onClick={() => create.mutate()}
-          >
+          <Button variant="hero" size="pill" className="mt-7" disabled={create.isPending} onClick={() => create.mutate()}>
             Salva paziente
           </Button>
         </div>
@@ -188,19 +156,9 @@ function PatientsPage() {
             >
               {p.health_data_consent ? "Consenso art. 9 acquisito" : "Consenso mancante"}
             </span>
-            <Link
-              to="/admin/agenda"
-              search={{ patient_id: p.id, title: `Appuntamento — ${p.first_name} ${p.last_name}` }}
-              className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-muted"
-            >
-              <CalendarPlus className="size-4" />
-              Fissa appuntamento
-            </Link>
           </div>
         ))}
-        {filtered.length === 0 && (
-          <p className="p-5 text-sm text-muted-foreground">Nessun paziente.</p>
-        )}
+        {filtered.length === 0 && <p className="p-5 text-sm text-muted-foreground">Nessun paziente.</p>}
       </div>
     </div>
   );
@@ -220,12 +178,7 @@ function Field({
   return (
     <div>
       <Label>{label}</Label>
-      <Input
-        type={type}
-        className="mt-2 h-12 rounded-xl"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-      />
+      <Input type={type} className="mt-2 h-12 rounded-xl" value={value} onChange={(e) => onChange(e.target.value)} />
     </div>
   );
 }

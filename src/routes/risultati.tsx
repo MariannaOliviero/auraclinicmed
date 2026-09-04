@@ -1,10 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { motion, AnimatePresence } from "motion/react";
 import { PageHero } from "@/components/site/page-hero";
 import { Reveal } from "@/components/site/motion-primitives";
 import { BeforeAfter } from "@/components/site/before-after";
 import { Button } from "@/components/ui/button";
+import { getPublishedCases } from "@/lib/gallery.functions";
 import beforeImg from "@/assets/ba-1-before.jpg";
 import afterImg from "@/assets/ba-1-after.jpg";
 
@@ -35,17 +37,54 @@ const filters = [
   { slug: "medicina-estetica", label: "Medicina estetica" },
 ];
 
-const cases = [
-  { id: 1, cat: "viso", title: "Rinoplastica strutturata", meta: "Donna, 29 anni · 12 mesi dopo" },
-  { id: 2, cat: "viso", title: "Blefaroplastica superiore", meta: "Donna, 48 anni · 6 mesi dopo" },
-  { id: 3, cat: "seno", title: "Mastoplastica additiva", meta: "Donna, 34 anni · 9 mesi dopo" },
-  { id: 4, cat: "corpo", title: "Liposuzione fianchi", meta: "Uomo, 41 anni · 6 mesi dopo" },
-  { id: 5, cat: "medicina-estetica", title: "Filler zigomi", meta: "Donna, 37 anni · 3 settimane dopo" },
-  { id: 6, cat: "viso", title: "Lifting collo", meta: "Donna, 57 anni · 8 mesi dopo" },
+const demoCases = [
+  {
+    id: "demo-1",
+    cat: "viso",
+    title: "Rinoplastica strutturata",
+    meta: "Esempio dimostrativo",
+    before: beforeImg,
+    after: afterImg,
+  },
+  {
+    id: "demo-2",
+    cat: "seno",
+    title: "Mastoplastica additiva",
+    meta: "Esempio dimostrativo",
+    before: beforeImg,
+    after: afterImg,
+  },
+  {
+    id: "demo-3",
+    cat: "corpo",
+    title: "Liposuzione fianchi",
+    meta: "Esempio dimostrativo",
+    before: beforeImg,
+    after: afterImg,
+  },
 ];
 
 function ResultsPage() {
   const [active, setActive] = useState("tutti");
+
+  const { data: real } = useQuery({
+    queryKey: ["published-cases"],
+    queryFn: () => getPublishedCases(),
+    staleTime: 5 * 60_000,
+  });
+
+  const cases =
+    real && real.length > 0
+      ? real.map((c) => ({
+          id: c.id,
+          cat: c.category,
+          title: c.title,
+          meta: c.meta ?? "",
+          before: c.before,
+          after: c.after,
+        }))
+      : demoCases;
+
   const visible = active === "tutti" ? cases : cases.filter((c) => c.cat === active);
 
   return (
@@ -87,7 +126,7 @@ function ResultsPage() {
                   exit={{ opacity: 0, y: -12 }}
                   transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  <BeforeAfter before={beforeImg} after={afterImg} alt={c.title} />
+                  <BeforeAfter before={c.before} after={c.after} alt={c.title} />
                   <figcaption className="mt-4">
                     <div className="font-medium">{c.title}</div>
                     <div className="text-sm text-muted-foreground">{c.meta}</div>

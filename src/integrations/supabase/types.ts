@@ -16,42 +16,36 @@ export type Database = {
     Tables: {
       appointments: {
         Row: {
-          confirmation_sent_at: string | null
           created_at: string
           ends_at: string
           id: string
           kind: string
           note: string | null
           patient_id: string | null
-          reminder_sent_at: string | null
           starts_at: string
           status: string
           title: string
           updated_at: string
         }
         Insert: {
-          confirmation_sent_at?: string | null
           created_at?: string
           ends_at: string
           id?: string
           kind?: string
           note?: string | null
           patient_id?: string | null
-          reminder_sent_at?: string | null
           starts_at: string
           status?: string
           title: string
           updated_at?: string
         }
         Update: {
-          confirmation_sent_at?: string | null
           created_at?: string
           ends_at?: string
           id?: string
           kind?: string
           note?: string | null
           patient_id?: string | null
-          reminder_sent_at?: string | null
           starts_at?: string
           status?: string
           title?: string
@@ -369,83 +363,6 @@ export type Database = {
           email?: string | null
           full_name?: string | null
           id?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
-      sms_log: {
-        Row: {
-          appointment_id: string | null
-          created_at: string
-          id: string
-          kind: string
-          phone: string
-          provider_response: string | null
-          sent_by: string | null
-          status: string
-        }
-        Insert: {
-          appointment_id?: string | null
-          created_at?: string
-          id?: string
-          kind: string
-          phone: string
-          provider_response?: string | null
-          sent_by?: string | null
-          status?: string
-        }
-        Update: {
-          appointment_id?: string | null
-          created_at?: string
-          id?: string
-          kind?: string
-          phone?: string
-          provider_response?: string | null
-          sent_by?: string | null
-          status?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "sms_log_appointment_id_fkey"
-            columns: ["appointment_id"]
-            isOneToOne: false
-            referencedRelation: "appointments"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      staff_shifts: {
-        Row: {
-          created_at: string
-          created_by: string | null
-          ends_at: string
-          id: string
-          note: string | null
-          role_label: string | null
-          staff_id: string
-          starts_at: string
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          created_by?: string | null
-          ends_at: string
-          id?: string
-          note?: string | null
-          role_label?: string | null
-          staff_id: string
-          starts_at: string
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          created_by?: string | null
-          ends_at?: string
-          id?: string
-          note?: string | null
-          role_label?: string | null
-          staff_id?: string
-          starts_at?: string
           updated_at?: string
         }
         Relationships: []
