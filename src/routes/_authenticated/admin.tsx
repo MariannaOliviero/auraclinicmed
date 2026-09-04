@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useStaff } from "@/hooks/use-staff";
+import { InstallAppButton } from "@/hooks/use-install-prompt";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/_authenticated/admin")({
@@ -70,6 +71,7 @@ function AdminLayout() {
 
         <div className="border-t border-border pt-5">
           <p className="truncate text-xs text-muted-foreground">{data?.user?.email}</p>
+          <InstallAppButton className="mt-3 inline-flex h-9 w-full items-center justify-center gap-2 rounded-full border border-border text-xs font-medium transition-colors hover:bg-muted" />
           <button
             onClick={signOut}
             className="mt-3 flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"

@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -10,7 +10,13 @@ import { Label } from "@/components/ui/label";
 
 type SmsKind = "reminder" | "confirmation";
 
+const searchSchema = z.object({
+  patient_id: z.string().optional(),
+  title: z.string().optional(),
+});
+
 export const Route = createFileRoute("/_authenticated/admin/agenda")({
+  validateSearch: searchSchema,
   component: AgendaPage,
 });
 
@@ -25,12 +31,14 @@ const schema = z.object({
 
 function AgendaPage() {
   const qc = useQueryClient();
+  const search = Route.useSearch();
   const [form, setForm] = useState({
-    title: "",
+    title: search.title ?? "",
     starts_at: "",
     kind: "consulenza",
-    patient_id: "",
+    patient_id: search.patient_id ?? "",
   });
+  const [prefillNotice, setPrefillNotice] = useState(!!search.patient_id);
 
   const { data: patients } = useQuery({
     queryKey: ["patients"],
@@ -43,6 +51,14 @@ function AgendaPage() {
       return data;
     },
   });
+
+  // Se arriviamo da "Fissa appuntamento" (Lead o Pazienti) con un patient_id nell'URL,
+  // pre-selezioniamo il paziente appena la lista è disponibile.
+  useEffect(() => {
+    if (search.patient_id) {
+      setForm((f) => ({ ...f, patient_id: search.patient_id! }));
+    }
+  }, [search.patient_id]);
 
   const { data: appointments } = useQuery({
     queryKey: ["appointments"],
@@ -118,6 +134,18 @@ function AgendaPage() {
     <div className="mx-auto max-w-5xl">
       <p className="eyebrow">Gestionale</p>
       <h1 className="display-md mt-3 text-3xl">Agenda</h1>
+
+      {prefillNotice && (
+        <div className="mt-6 flex items-center justify-between gap-3 rounded-xl bg-sage/10 px-4 py-3 text-sm text-sage">
+          <span>Paziente precompilato — controlla titolo, data e ora e conferma.</span>
+          <button
+            className="underline-offset-4 hover:underline"
+            onClick={() => setPrefillNotice(false)}
+          >
+            Ok
+          </button>
+        </div>
+      )}
 
       <div className="card-aura mt-8 grid gap-5 p-6 md:grid-cols-4 md:p-8">
         <div className="md:col-span-2">

@@ -46,6 +46,30 @@ Sezione "Turni" nel menu del gestionale: gli **admin** possono assegnare turni a
 etichetta ruolo tipo "Reception"/"Sala"), tutto lo staff può consultarli. Nessuna configurazione aggiuntiva richiesta, funziona
 subito dopo il push delle migrazioni.
 
+## App installabile su desktop e smartphone (PWA)
+Ho aggiunto tutto il necessario per rendere il sito "installabile" come un'app, senza passare da App Store/Play Store:
+- `public/manifest.webmanifest` → nome, colori e icone dell'app
+- `public/sw.js` → service worker minimale (richiesto tecnicamente per l'installazione; non mette in cache dati reali,
+  solo l'involucro statico, così il gestionale mostra sempre dati aggiornati)
+- `public/icons/` → icone segnaposto (una "A" bianca su nero) — **da sostituire con il logo reale del cliente** quando
+  personalizzi il prodotto (basta sovrascrivere gli stessi file mantenendo gli stessi nomi/dimensioni: 192x192, 512x512,
+  più le versioni "maskable" per Android e l'apple-touch-icon 180x180)
+- Pulsante **"Installa app"** che compare da solo nella sidebar del gestionale, quando il browser lo supporta
+
+**Come la installano gli utenti (nessuna configurazione richiesta da parte tua, funziona già così):**
+- **Desktop (Chrome/Edge)**: icona di installazione nella barra degli indirizzi, oppure il pulsante "Installa app" nel gestionale
+- **Android (Chrome)**: banner automatico "Aggiungi a schermata Home", oppure menu ⋮ → "Installa app"
+- **iPhone/iPad (Safari)**: pulsante Condividi (□↑) → "Aggiungi a Home" (iOS non mostra prompt automatici, è sempre manuale — limite di Apple, non nostro)
+
+Una volta installata, l'app si apre a schermo intero, con icona propria, senza barra del browser — a tutti gli effetti
+sembra un'app nativa, pur restando un sito web.
+
+## "Fissa appuntamento" diretto da Lead e Pazienti
+Ora, sia nella pagina **Pazienti** (per ogni paziente) sia nella pagina **Lead** (dopo averlo convertito in paziente),
+c'è un pulsante **"Fissa appuntamento"**: porta direttamente in Agenda con il paziente già selezionato nel modulo
+(e, partendo da un Lead, con un titolo già suggerito in base all'interesse indicato). Resta comunque da confermare
+a mano data e ora (quelle concordate al telefono con il cliente), il resto è precompilato.
+
 ## Registrazione automatica come "staff" (SOLO per questa demo pubblica)
 Ho aggiunto `supabase/migrations/20260903201000_demo_auto_staff_role.sql`: chi si registra su
 `https://auraclinicmed.lovable.app/auth` riceve subito il ruolo "staff" ed entra nel gestionale senza bisogno
