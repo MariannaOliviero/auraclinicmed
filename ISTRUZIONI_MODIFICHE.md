@@ -46,6 +46,13 @@ Sezione "Turni" nel menu del gestionale: gli **admin** possono assegnare turni a
 etichetta ruolo tipo "Reception"/"Sala"), tutto lo staff può consultarli. Nessuna configurazione aggiuntiva richiesta, funziona
 subito dopo il push delle migrazioni.
 
+## Documenti: da "firma finta" ad archivio reale
+La vecchia versione di "Documenti" faceva solo scrivere un nome in un campo di testo e lo segnava come "firmato" — nessun
+valore legale reale, nessun contenuto del documento. L'ho sostituita con un **archivio vero**: lo staff carica il file
+(PDF o foto della scansione) di un documento già firmato dal paziente su carta, o firmato digitalmente altrove. Il file
+viene conservato in modo sicuro (bucket privato `documenti-pazienti`, visibile solo allo staff), collegato al paziente,
+con data di caricamento e un link "Visualizza documento". Gli admin possono anche eliminare un documento caricato per errore.
+
 ## App installabile su desktop e smartphone (PWA)
 Ho aggiunto tutto il necessario per rendere il sito "installabile" come un'app, senza passare da App Store/Play Store:
 - `public/manifest.webmanifest` → nome, colori e icone dell'app
