@@ -31,6 +31,7 @@ import { Route as AuthenticatedAdminImpostazioniRouteImport } from './routes/_au
 import { Route as AuthenticatedAdminLeadRouteImport } from './routes/_authenticated/admin.lead'
 import { Route as AuthenticatedAdminPazientiRouteImport } from './routes/_authenticated/admin.pazienti'
 import { Route as AuthenticatedAdminRisultatiRouteImport } from './routes/_authenticated/admin.risultati'
+import { Route as ApiPublicAppointmentSmsRouteImport } from './routes/api/public/appointment-sms'
 import { Route as TrattamentiCategoriaIndexRouteImport } from './routes/trattamenti.$categoria.index'
 import { Route as TrattamentiCategoriaSlugRouteImport } from './routes/trattamenti.$categoria.$slug'
 
@@ -148,6 +149,11 @@ const AuthenticatedAdminRisultatiRoute =
     path: '/risultati',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const ApiPublicAppointmentSmsRoute = ApiPublicAppointmentSmsRouteImport.update({
+  id: '/api/public/appointment-sms',
+  path: '/api/public/appointment-sms',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TrattamentiCategoriaIndexRoute =
   TrattamentiCategoriaIndexRouteImport.update({
     id: '/trattamenti/$categoria/',
@@ -182,6 +188,7 @@ export interface FileRoutesByFullPath {
   '/admin/lead': typeof AuthenticatedAdminLeadRoute
   '/admin/pazienti': typeof AuthenticatedAdminPazientiRoute
   '/admin/risultati': typeof AuthenticatedAdminRisultatiRoute
+  '/api/public/appointment-sms': typeof ApiPublicAppointmentSmsRoute
   '/trattamenti/$categoria/$slug': typeof TrattamentiCategoriaSlugRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/trattamenti/$categoria/': typeof TrattamentiCategoriaIndexRoute
@@ -206,6 +213,7 @@ export interface FileRoutesByTo {
   '/admin/lead': typeof AuthenticatedAdminLeadRoute
   '/admin/pazienti': typeof AuthenticatedAdminPazientiRoute
   '/admin/risultati': typeof AuthenticatedAdminRisultatiRoute
+  '/api/public/appointment-sms': typeof ApiPublicAppointmentSmsRoute
   '/trattamenti/$categoria/$slug': typeof TrattamentiCategoriaSlugRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/trattamenti/$categoria': typeof TrattamentiCategoriaIndexRoute
@@ -233,6 +241,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/lead': typeof AuthenticatedAdminLeadRoute
   '/_authenticated/admin/pazienti': typeof AuthenticatedAdminPazientiRoute
   '/_authenticated/admin/risultati': typeof AuthenticatedAdminRisultatiRoute
+  '/api/public/appointment-sms': typeof ApiPublicAppointmentSmsRoute
   '/trattamenti/$categoria/$slug': typeof TrattamentiCategoriaSlugRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/trattamenti/$categoria/': typeof TrattamentiCategoriaIndexRoute
@@ -260,6 +269,7 @@ export interface FileRouteTypes {
     | '/admin/lead'
     | '/admin/pazienti'
     | '/admin/risultati'
+    | '/api/public/appointment-sms'
     | '/trattamenti/$categoria/$slug'
     | '/admin/'
     | '/trattamenti/$categoria/'
@@ -284,6 +294,7 @@ export interface FileRouteTypes {
     | '/admin/lead'
     | '/admin/pazienti'
     | '/admin/risultati'
+    | '/api/public/appointment-sms'
     | '/trattamenti/$categoria/$slug'
     | '/admin'
     | '/trattamenti/$categoria'
@@ -310,6 +321,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/lead'
     | '/_authenticated/admin/pazienti'
     | '/_authenticated/admin/risultati'
+    | '/api/public/appointment-sms'
     | '/trattamenti/$categoria/$slug'
     | '/_authenticated/admin/'
     | '/trattamenti/$categoria/'
@@ -330,6 +342,7 @@ export interface RootRouteChildren {
   LegalePrivacyRoute: typeof LegalePrivacyRoute
   LegaleTerminiRoute: typeof LegaleTerminiRoute
   TrattamentiIndexRoute: typeof TrattamentiIndexRoute
+  ApiPublicAppointmentSmsRoute: typeof ApiPublicAppointmentSmsRoute
   TrattamentiCategoriaSlugRoute: typeof TrattamentiCategoriaSlugRoute
   TrattamentiCategoriaIndexRoute: typeof TrattamentiCategoriaIndexRoute
 }
@@ -490,6 +503,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminRisultatiRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/api/public/appointment-sms': {
+      id: '/api/public/appointment-sms'
+      path: '/api/public/appointment-sms'
+      fullPath: '/api/public/appointment-sms'
+      preLoaderRoute: typeof ApiPublicAppointmentSmsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/trattamenti/$categoria/': {
       id: '/trattamenti/$categoria/'
       path: '/trattamenti/$categoria'
@@ -556,6 +576,7 @@ const rootRouteChildren: RootRouteChildren = {
   LegalePrivacyRoute: LegalePrivacyRoute,
   LegaleTerminiRoute: LegaleTerminiRoute,
   TrattamentiIndexRoute: TrattamentiIndexRoute,
+  ApiPublicAppointmentSmsRoute: ApiPublicAppointmentSmsRoute,
   TrattamentiCategoriaSlugRoute: TrattamentiCategoriaSlugRoute,
   TrattamentiCategoriaIndexRoute: TrattamentiCategoriaIndexRoute,
 }
