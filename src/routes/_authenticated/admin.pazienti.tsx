@@ -3,8 +3,9 @@ import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { z } from "zod";
-import { CalendarPlus } from "lucide-react";
+import { CalendarPlus, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { useStaff } from "@/hooks/use-staff";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -39,6 +40,8 @@ const empty = {
 
 function PatientsPage() {
   const qc = useQueryClient();
+  const { data: me } = useStaff();
+  const isAdmin = me?.roles.includes("admin") ?? false;
   const [form, setForm] = useState(empty);
   const [open, setOpen] = useState(false);
   const [q, setQ] = useState("");
@@ -82,6 +85,18 @@ function PatientsPage() {
   const filtered = (patients ?? []).filter((p) =>
     `${p.first_name} ${p.last_name} ${p.email ?? ""}`.toLowerCase().includes(q.toLowerCase()),
   );
+
+  const remove = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from("patients").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["patients"] });
+      toast.success("Paziente eliminato");
+    },
+    onError: () => toast.error("Operazione non consentita"),
+  });
 
   return (
     <div className="mx-auto max-w-5xl">
@@ -196,6 +211,22 @@ function PatientsPage() {
               <CalendarPlus className="size-4" />
               Fissa appuntamento
             </Link>
+            {isAdmin && (
+              <button
+                className="text-muted-foreground hover:text-destructive"
+                onClick={() => {
+                  if (
+                    confirm(
+                      `Eliminare definitivamente ${p.first_name} ${p.last_name}? Verranno eliminati anche i suoi appuntamenti e documenti.`,
+                    )
+                  )
+                    remove.mutate(p.id);
+                }}
+                aria-label="Elimina paziente"
+              >
+                <Trash2 className="size-4" />
+              </button>
+            )}
           </div>
         ))}
         {filtered.length === 0 && (

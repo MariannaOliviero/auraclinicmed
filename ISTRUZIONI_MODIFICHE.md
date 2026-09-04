@@ -53,6 +53,12 @@ valore legale reale, nessun contenuto del documento. L'ho sostituita con un **ar
 viene conservato in modo sicuro (bucket privato `documenti-pazienti`, visibile solo allo staff), collegato al paziente,
 con data di caricamento e un link "Visualizza documento". Gli admin possono anche eliminare un documento caricato per errore.
 
+## Eliminazione dati (Lead, Pazienti, Risultati)
+Prima mancava il pulsante "Elimina" in queste 3 sezioni (il database lo permetteva già, solo agli admin, ma
+l'interfaccia non lo usava). Ora, per gli **admin**, ogni scheda Lead/Paziente/Caso in Risultati ha un pulsante
+per eliminarla in modo permanente (con richiesta di conferma). Eliminare un paziente elimina automaticamente
+anche i suoi appuntamenti e documenti collegati; eliminare un caso in Risultati rimuove anche le foto dallo storage.
+
 ## App installabile su desktop e smartphone (PWA)
 Ho aggiunto tutto il necessario per rendere il sito "installabile" come un'app, senza passare da App Store/Play Store:
 - `public/manifest.webmanifest` → nome, colori e icone dell'app
@@ -77,13 +83,28 @@ c'è un pulsante **"Fissa appuntamento"**: porta direttamente in Agenda con il p
 (e, partendo da un Lead, con un titolo già suggerito in base all'interesse indicato). Resta comunque da confermare
 a mano data e ora (quelle concordate al telefono con il cliente), il resto è precompilato.
 
-## Registrazione automatica come "staff" (SOLO per questa demo pubblica)
-Ho aggiunto `supabase/migrations/20260903201000_demo_auto_staff_role.sql`: chi si registra su
-`https://auraclinicmed.lovable.app/auth` riceve subito il ruolo "staff" ed entra nel gestionale senza bisogno
-che tu lo abiliti a mano da "Team". Comodo per far provare la demo ai potenziali clienti.
+## Registrazione automatica come "admin" (SOLO per questa demo pubblica)
+Ho aggiunto `supabase/migrations/20260904210000_demo_auto_admin_role.sql`: chi si registra su
+`https://auraclinicmed.lovable.app/auth` riceve subito il ruolo **"admin"** (aggiornato da "staff" a "admin", così un
+potenziale cliente in prova può creare turni, gestire il team, eliminare record di prova — tutte le funzionalità)
+ed entra nel gestionale senza bisogno che tu lo abiliti a mano. Comodo per far provare la demo ai potenziali clienti.
+
+Questa migrazione **sostituisce** la precedente `20260903201000_demo_auto_staff_role.sql` (che assegnava solo "staff") —
+carica anche quella nel pacchetto, l'ultima eseguita nello SQL Editor è quella che conta.
+
+**Account già registrati prima di questo aggiornamento** (es. il tuo account "+test", rimasto con ruolo "staff"):
+per farli diventare admin, esegui una volta in SQL Editor (sostituendo l'email):
+```sql
+insert into public.user_roles (user_id, role)
+select id, 'admin'
+from auth.users
+where email = 'TUA-EMAIL+test@gmail.com'
+on conflict (user_id, role) do nothing;
+```
 
 **IMPORTANTE — da fare quando consegni il prodotto vero a un cliente reale**: questa migrazione va **disattivata**,
-altrimenti chiunque si registrasse sul sito del cliente vedrebbe subito i dati reali dei suoi pazienti. Per disattivarla,
-crea una nuova migrazione che rimette la funzione `handle_new_user` alla versione originale (senza la riga che inserisce
-in `user_roles`) — se vuoi te la preparo io al momento della consegna, basta chiedermelo.
+altrimenti chiunque si registrasse sul sito del cliente diventerebbe subito admin con accesso completo ai dati reali
+dei pazienti. Per disattivarla, crea una nuova migrazione che rimette la funzione `handle_new_user` alla versione
+originale (senza la riga che inserisce in `user_roles`) — se vuoi te la preparo io al momento della consegna, basta
+chiedermelo.
 

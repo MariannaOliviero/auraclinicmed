@@ -2,8 +2,9 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { UserCheck, CalendarPlus } from "lucide-react";
+import { UserCheck, CalendarPlus, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { useStaff } from "@/hooks/use-staff";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 
@@ -21,6 +22,8 @@ const STATUSES = [
 
 function LeadsPage() {
   const qc = useQueryClient();
+  const { data: me } = useStaff();
+  const isAdmin = me?.roles.includes("admin") ?? false;
   const [noteDraft, setNoteDraft] = useState<Record<string, string>>({});
 
   const { data: leads } = useQuery({
@@ -114,6 +117,18 @@ function LeadsPage() {
     onError: () => toast.error("Salvataggio nota non riuscito"),
   });
 
+  const remove = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from("leads").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["leads"] });
+      toast.success("Lead eliminato");
+    },
+    onError: () => toast.error("Operazione non consentita"),
+  });
+
   const notesByLead = (leadId: string) => (notes ?? []).filter((n) => n.lead_id === leadId);
 
   return (
@@ -168,6 +183,18 @@ function LeadsPage() {
                 <div className="mt-1 text-xs text-muted-foreground">
                   Marketing: {l.marketing_consent ? "sì" : "no"}
                 </div>
+                {isAdmin && (
+                  <button
+                    className="mt-2 inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-destructive"
+                    onClick={() => {
+                      if (confirm(`Eliminare definitivamente il lead "${l.name}"?`))
+                        remove.mutate(l.id);
+                    }}
+                  >
+                    <Trash2 className="size-3.5" />
+                    Elimina
+                  </button>
+                )}
               </div>
             </div>
 

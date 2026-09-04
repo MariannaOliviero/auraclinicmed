@@ -2,8 +2,10 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { Loader2, Upload } from "lucide-react";
+import { Loader2, Trash2, Upload } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import type { Database } from "@/integrations/supabase/types";
+import { useStaff } from "@/hooks/use-staff";
 import { watermarkImage } from "@/lib/watermark";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -35,6 +37,8 @@ const empty = {
 
 function GalleryAdminPage() {
   const qc = useQueryClient();
+  const { data: me } = useStaff();
+  const isAdmin = me?.roles.includes("admin") ?? false;
   const [form, setForm] = useState(empty);
   const [before, setBefore] = useState<File | null>(null);
   const [after, setAfter] = useState<File | null>(null);
@@ -125,7 +129,13 @@ function GalleryAdminPage() {
   });
 
   const update = useMutation({
-    mutationFn: async ({ id, patch }: { id: string; patch: { published?: boolean; consent_revoked_at?: string | null } }) => {
+    mutationFn: async ({
+      id,
+      patch,
+    }: {
+      id: string;
+      patch: Database["public"]["Tables"]["case_photos"]["Update"];
+    }) => {
       const { error } = await supabase.from("case_photos").update(patch).eq("id", id);
       if (error) throw error;
     },
@@ -134,6 +144,28 @@ function GalleryAdminPage() {
       toast.success("Caso aggiornato");
     },
     onError: (e) => toast.error(e instanceof Error ? e.message : "Aggiornamento non riuscito"),
+  });
+
+  const remove = useMutation({
+    mutationFn: async (c: {
+      id: string;
+      before_path: string | null;
+      after_path: string | null;
+      before_public_path: string | null;
+      after_public_path: string | null;
+    }) => {
+      const paths = [c.before_path, c.after_path, c.before_public_path, c.after_public_path].filter(
+        (p): p is string => !!p,
+      );
+      if (paths.length) await supabase.storage.from("case-photos").remove(paths);
+      const { error } = await supabase.from("case_photos").delete().eq("id", c.id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["case_photos"] });
+      toast.success("Caso eliminato");
+    },
+    onError: () => toast.error("Operazione non consentita"),
   });
 
   return (
@@ -301,6 +333,24 @@ function GalleryAdminPage() {
                   }
                 >
                   Registra revoca
+                </Button>
+              )}
+              {isAdmin && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-destructive hover:text-destructive"
+                  onClick={() => {
+                    if (
+                      confirm(
+                        `Eliminare definitivamente il caso "${c.title}"? Le foto verranno rimosse.`,
+                      )
+                    )
+                      remove.mutate(c);
+                  }}
+                >
+                  <Trash2 className="size-4" />
+                  Elimina
                 </Button>
               )}
             </div>
