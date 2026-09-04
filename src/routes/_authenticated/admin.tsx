@@ -1,6 +1,6 @@
 import { createFileRoute, Link, Outlet, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
-import { CalendarDays, FileSignature, LayoutDashboard, LogOut, Sparkle, UserRound, Users } from "lucide-react";
+import { CalendarDays, FileSignature, Images, LayoutDashboard, LogOut, Sparkle, UserRound, Users } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useStaff } from "@/hooks/use-staff";
 import { Button } from "@/components/ui/button";
@@ -14,6 +14,7 @@ const nav = [
   { to: "/admin/lead", label: "Lead", icon: Sparkle, exact: false },
   { to: "/admin/pazienti", label: "Pazienti", icon: Users, exact: false },
   { to: "/admin/agenda", label: "Agenda", icon: CalendarDays, exact: false },
+  { to: "/admin/risultati", label: "Galleria", icon: Images, exact: false },
   { to: "/admin/documenti", label: "Documenti", icon: FileSignature, exact: false },
   { to: "/admin/impostazioni", label: "Team", icon: UserRound, exact: false },
 ] as const;
