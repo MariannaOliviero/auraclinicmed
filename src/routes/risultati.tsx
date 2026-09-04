@@ -126,7 +126,7 @@ function ResultsPage() {
                   exit={{ opacity: 0, y: -12 }}
                   transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  <BeforeAfter before={beforeImg} after={afterImg} alt={c.title} />
+                  <BeforeAfter before={c.before} after={c.after} alt={c.title} />
                   <figcaption className="mt-4">
                     <div className="font-medium">{c.title}</div>
                     <div className="text-sm text-muted-foreground">{c.meta}</div>
