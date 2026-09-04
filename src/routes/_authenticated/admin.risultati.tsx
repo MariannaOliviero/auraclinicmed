@@ -56,7 +56,9 @@ function GalleryAdminPage() {
         const { data: signed } = await supabase.storage
           .from("case-photos")
           .createSignedUrls(paths, 3600);
-        (signed ?? []).forEach((s) => s.signedUrl && previews.set(s.path, s.signedUrl));
+        (signed ?? []).forEach((s) => {
+          if (s.path && s.signedUrl) previews.set(s.path, s.signedUrl);
+        });
       }
       return data.map((c) => ({
         ...c,
@@ -123,7 +125,7 @@ function GalleryAdminPage() {
   });
 
   const update = useMutation({
-    mutationFn: async ({ id, patch }: { id: string; patch: Record<string, unknown> }) => {
+    mutationFn: async ({ id, patch }: { id: string; patch: { published?: boolean; consent_revoked_at?: string | null } }) => {
       const { error } = await supabase.from("case_photos").update(patch).eq("id", id);
       if (error) throw error;
     },
