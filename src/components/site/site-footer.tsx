@@ -109,10 +109,6 @@ export function SiteFooter() {
             AURA Clinic S.r.l. — P.IVA 00000000000 — Direttore Sanitario Dott. Alessandro Rinaldi,
             iscritto all'Ordine dei Medici di Milano n. 00000. Autorizzazione sanitaria n. 0000.
           </p>
-          <p className="mt-3">
-            Progetto dimostrativo di portfolio. I testi legali sono bozze segnaposto e devono essere
-            validati da un legale e dal DPO prima di qualsiasi messa online reale.
-          </p>
         </div>
       </div>
     </footer>
