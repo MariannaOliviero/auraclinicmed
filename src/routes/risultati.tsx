@@ -1,10 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { motion, AnimatePresence } from "motion/react";
 import { PageHero } from "@/components/site/page-hero";
 import { Reveal } from "@/components/site/motion-primitives";
 import { BeforeAfter } from "@/components/site/before-after";
 import { Button } from "@/components/ui/button";
+import { getPublishedCases } from "@/lib/gallery.functions";
 import beforeImg from "@/assets/ba-1-before.jpg";
 import afterImg from "@/assets/ba-1-after.jpg";
 
