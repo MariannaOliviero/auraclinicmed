@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { UserCheck, ArrowRight } from "lucide-react";
+import { UserCheck, CalendarPlus } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -114,8 +114,7 @@ function LeadsPage() {
     onError: () => toast.error("Salvataggio nota non riuscito"),
   });
 
-  const notesByLead = (leadId: string) =>
-    (notes ?? []).filter((n) => n.lead_id === leadId);
+  const notesByLead = (leadId: string) => (notes ?? []).filter((n) => n.lead_id === leadId);
 
   return (
     <div className="mx-auto max-w-5xl">
@@ -148,7 +147,9 @@ function LeadsPage() {
               <div className="text-right">
                 <select
                   value={l.status}
-                  onChange={(e) => updateLead.mutate({ id: l.id, patch: { status: e.target.value } })}
+                  onChange={(e) =>
+                    updateLead.mutate({ id: l.id, patch: { status: e.target.value } })
+                  }
                   disabled={updateLead.isPending}
                   className="h-10 rounded-xl border border-border bg-background px-3 text-sm"
                 >
@@ -195,16 +196,30 @@ function LeadsPage() {
                 </select>
               </div>
 
-              <div className="flex items-end justify-start sm:justify-end">
+              <div className="flex items-end justify-start gap-2 sm:justify-end">
                 {l.converted_patient_id ? (
-                  <Link
-                    to="/admin/pazienti"
-                    className="inline-flex items-center gap-2 rounded-full bg-sage/15 px-4 py-2 text-sm font-medium text-sage hover:bg-sage/20"
-                  >
-                    <UserCheck className="size-4" />
-                    Convertito in paziente
-                    <ArrowRight className="size-4" />
-                  </Link>
+                  <>
+                    <Link
+                      to="/admin/pazienti"
+                      className="inline-flex items-center gap-2 rounded-full bg-sage/15 px-4 py-2 text-sm font-medium text-sage hover:bg-sage/20"
+                    >
+                      <UserCheck className="size-4" />
+                      Convertito in paziente
+                    </Link>
+                    <Link
+                      to="/admin/agenda"
+                      search={{
+                        patient_id: l.converted_patient_id,
+                        title: l.interest
+                          ? `Consulenza — ${l.interest}`
+                          : `Appuntamento — ${l.name}`,
+                      }}
+                      className="inline-flex items-center gap-2 rounded-full bg-foreground px-4 py-2 text-sm font-medium text-background hover:opacity-90"
+                    >
+                      <CalendarPlus className="size-4" />
+                      Fissa appuntamento
+                    </Link>
+                  </>
                 ) : (
                   <Button
                     variant="hero"
@@ -248,7 +263,9 @@ function LeadsPage() {
                   <div key={n.id} className="rounded-xl bg-muted/60 p-3 text-sm">
                     <p className="text-foreground/90">{n.note}</p>
                     <div className="mt-2 flex items-center gap-2 text-xs text-muted-foreground">
-                      <span>{(n.profiles as { full_name?: string } | null)?.full_name ?? "Staff"}</span>
+                      <span>
+                        {(n.profiles as { full_name?: string } | null)?.full_name ?? "Staff"}
+                      </span>
                       <span>·</span>
                       <span>
                         {new Date(n.created_at).toLocaleString("it-IT", {
@@ -263,9 +280,7 @@ function LeadsPage() {
               <div className="mt-3 flex items-start gap-2">
                 <Textarea
                   value={noteDraft[l.id] ?? ""}
-                  onChange={(e) =>
-                    setNoteDraft((prev) => ({ ...prev, [l.id]: e.target.value }))
-                  }
+                  onChange={(e) => setNoteDraft((prev) => ({ ...prev, [l.id]: e.target.value }))}
                   placeholder="Aggiungi una nota interna…"
                   className="min-h-[72px] flex-1 rounded-xl text-sm"
                 />
@@ -280,9 +295,8 @@ function LeadsPage() {
                     addNote.mutate(
                       { leadId: l.id, text },
                       {
-                        onSuccess: () =>
-                          setNoteDraft((prev) => ({ ...prev, [l.id]: "" })),
-                      }
+                        onSuccess: () => setNoteDraft((prev) => ({ ...prev, [l.id]: "" })),
+                      },
                     );
                   }}
                 >

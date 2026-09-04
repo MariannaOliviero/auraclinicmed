@@ -21,7 +21,8 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "AURA Clinic — Chirurgia plastica ed estetica a Milano" },
       {
         property: "og:description",
-        content: "Bellezza autentica, cura senza compromessi. Studio di chirurgia plastica a Milano.",
+        content:
+          "Bellezza autentica, cura senza compromessi. Studio di chirurgia plastica a Milano.",
       },
     ],
   }),
@@ -250,7 +251,7 @@ function Home() {
                 asChild
                 size="pill-lg"
                 variant="ghost"
-                className="border border-primary-foreground/25 hover:bg-primary-foreground/10"
+                className="border border-primary-foreground/25 text-primary-foreground hover:bg-primary-foreground/15 hover:text-primary-foreground"
               >
                 <a href="https://wa.me/390200000000" target="_blank" rel="noreferrer">
                   Scrivici su WhatsApp

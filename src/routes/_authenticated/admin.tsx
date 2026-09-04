@@ -1,8 +1,18 @@
 import { createFileRoute, Link, Outlet, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
-import { CalendarDays, FileSignature, Images, LayoutDashboard, LogOut, Sparkle, UserRound, Users } from "lucide-react";
+import {
+  CalendarClock,
+  CalendarDays,
+  FileSignature,
+  LayoutDashboard,
+  LogOut,
+  Sparkle,
+  UserRound,
+  Users,
+} from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useStaff } from "@/hooks/use-staff";
+import { InstallAppButton } from "@/hooks/use-install-prompt";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/_authenticated/admin")({
@@ -14,7 +24,7 @@ const nav = [
   { to: "/admin/lead", label: "Lead", icon: Sparkle, exact: false },
   { to: "/admin/pazienti", label: "Pazienti", icon: Users, exact: false },
   { to: "/admin/agenda", label: "Agenda", icon: CalendarDays, exact: false },
-  { to: "/admin/risultati", label: "Galleria", icon: Images, exact: false },
+  { to: "/admin/turni", label: "Turni", icon: CalendarClock, exact: false },
   { to: "/admin/documenti", label: "Documenti", icon: FileSignature, exact: false },
   { to: "/admin/impostazioni", label: "Team", icon: UserRound, exact: false },
 ] as const;
@@ -61,6 +71,7 @@ function AdminLayout() {
 
         <div className="border-t border-border pt-5">
           <p className="truncate text-xs text-muted-foreground">{data?.user?.email}</p>
+          <InstallAppButton className="mt-3 inline-flex h-9 w-full items-center justify-center gap-2 rounded-full border border-border text-xs font-medium transition-colors hover:bg-muted" />
           <button
             onClick={signOut}
             className="mt-3 flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
@@ -73,7 +84,11 @@ function AdminLayout() {
       <div className="flex min-w-0 flex-1 flex-col">
         <div className="flex items-center gap-3 overflow-x-auto border-b border-border bg-background/80 px-4 py-3 backdrop-blur-xl md:hidden">
           {nav.map((item) => (
-            <Link key={item.to} to={item.to} className="whitespace-nowrap text-sm text-muted-foreground">
+            <Link
+              key={item.to}
+              to={item.to}
+              className="whitespace-nowrap text-sm text-muted-foreground"
+            >
               {item.label}
             </Link>
           ))}
